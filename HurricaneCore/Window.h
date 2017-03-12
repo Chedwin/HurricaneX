@@ -5,7 +5,7 @@
 
 class Window {
 public:
-	Window(HINSTANCE _hInst, int show, int _width, int _height);
+	Window(HINSTANCE _hInst, int _width, int _height);
 	~Window();
 
 	HWND GetHandle() const;
@@ -19,13 +19,16 @@ public:
 	}
 
 	inline float GetAspectRatio() const {
-		return _width / _height;
+		return (float)_width / _height;
 	}
+
 
 protected:
 	HWND _window;
 	HINSTANCE _hInst;
 	int _width, _height;
+public:
+	static HDC hDC;
 };
 
 #endif

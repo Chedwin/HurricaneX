@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Root>
+
+  <GeneralProperty>
+    <name>Hurricane Solar System Simulator 2016</name>
+    <author>Edwin Chen</author>
+  </GeneralProperty>
+
+  <AudioProperty>
+    <master>1.0</master>
+    <music>1.0</music>
+    <soundfx>1.0</soundfx>
+  </AudioProperty>
+
+  <VideoProperty>
+    <width>900</width>
+    <height>300</height>
+    <drawdistance>100.0</drawdistance>
+    <fullscreen>0</fullscreen>
+  </VideoProperty>
+
+</Root>
