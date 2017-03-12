@@ -1,6 +1,6 @@
 
 #include <Macro.h>
-#include "TestGame.h"
+#include "DX11Game.h"
 
 int CALLBACK WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR cmd, int nShowCmd) 
 {
@@ -14,7 +14,7 @@ int CALLBACK WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR cmd, int nShowC
 
 	static_assert(sizeof(void*) == 4, "64-bit code generation not supported!\n");
 
-	TestGame* game = new TestGame();
+	DX11Game* game = new DX11Game();
 	game->Run(hInst);
 
 	delete game;

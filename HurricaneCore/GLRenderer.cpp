@@ -2,14 +2,11 @@
 
 GLRenderer::GLRenderer(const Window& _wnd) : AbstractRenderer(_wnd)
 {
-	/*GLenum error = glewInit();
+	GLenum error = glewInit();
 	if (error != GLEW_OK) {
 		MessageBox(_wnd.GetHandle(), "GLEW initialization FAILED", "Error", 0);
 		exit(0);
-	}*/
-
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 0.0f, 0.4f, 1.0f);
+	}
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -19,6 +16,8 @@ GLRenderer::GLRenderer(const Window& _wnd) : AbstractRenderer(_wnd)
 	glFrontFace(GL_CCW);
 	glEnable(GL_BLEND);
 	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+	glViewport(0, 0, _wnd.GetWidth(), _wnd.GetHeight());
 }
 
 GLRenderer::~GLRenderer()
@@ -35,6 +34,7 @@ void GLRenderer::BeginFrame()
 
 	// To operate on model-view matrix
 	glMatrixMode(GL_MODELVIEW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void GLRenderer::Render()
@@ -43,5 +43,5 @@ void GLRenderer::Render()
 
 void GLRenderer::EndFrame()
 {
-	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+	SwapBuffers(Window::hDC);
 }

@@ -1,3 +1,7 @@
-﻿  Game.cpp
-d:\users\edwin\github\hurricanex\hurricanecore\clock.h(43): warning C4800: 'BOOL': forcing value to bool 'true' or 'false' (performance warning)
+﻿  Window.cpp
+  DXRenderer.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Game.cpp
+  GLRenderer.cpp
   HurricaneCore.vcxproj -> D:\Users\edwin\GitHub\HurricaneX\Debug\HurricaneCore.lib

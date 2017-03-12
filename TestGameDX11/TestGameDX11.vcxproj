@@ -149,10 +149,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestGame.cpp" />
+    <ClCompile Include="DX11Game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestGame.h" />
+    <ClInclude Include="DX11Game.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="properties.xml" />

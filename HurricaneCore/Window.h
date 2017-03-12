@@ -9,6 +9,7 @@ public:
 	~Window();
 
 	HWND GetHandle() const;
+	void SetWindowSize(const int _w, const int _h);
 
 	inline int GetWidth() const {
 		return _width;

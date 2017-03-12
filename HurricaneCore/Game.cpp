@@ -36,13 +36,13 @@ bool Game::InitEngine(HINSTANCE _hInst)
 	hProps = H_PROPERTIES;
 
 	gameWindow = new Window(_hInst, hProps->GetVideoProperties()->screenWidth , hProps->GetVideoProperties()->screenHeight);
-
-#ifdef HURRICANE_OPENGL
-	GLenum error = glewInit();
+#define HURRICANE_OPENGL
+#if defined(HURRICANE_OPENGL)
+	/*GLenum error = glewInit();
 	if (error != GLEW_OK) {
 		MessageBox(gameWindow->GetHandle(), "GLEW initialization FAILED", "Error", 0);
 		exit(0);
-	}
+	}*/
 	renderer = new GLRenderer(*gameWindow);
 #else
 	renderer = new DXRenderer(*gameWindow);
@@ -105,9 +105,9 @@ void Game::GameLoop()
 
 		renderer->EndFrame();
 
-#if defined(HURRICANE_OPENGL)
-		SwapBuffers(Window::hDC);
-#endif
+//#if defined(HURRICANE_OPENGL)
+//		SwapBuffers(Window::hDC);
+//#endif
 	}
 
 }

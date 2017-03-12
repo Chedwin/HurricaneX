@@ -126,6 +126,8 @@ LRESULT CALLBACK WndProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam)
 
 Window::Window(HINSTANCE _hInst, int _width, int _height)
 {
+	SetWindowSize(_width, _height);
+
 	WNDCLASS wc = { 0 };
 	wc.style = CS_HREDRAW | CS_VREDRAW; // window to be painted either horizontally or vertically
 	wc.lpfnWndProc = WndProc; // pointer to the window procedure function to deal w/ the WNDCLASS instance
@@ -177,4 +179,9 @@ Window::~Window()
 HWND Window::GetHandle() const
 {
 	return _window;
+}
+
+void Window::SetWindowSize(const int _w, const int _h) {
+	_width = _w;
+	_height = _h;
 }
