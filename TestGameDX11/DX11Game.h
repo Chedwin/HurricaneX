@@ -2,6 +2,7 @@
 
 #include <Macro.h>
 #include <Game.h>
+#include "Triangle.h"
 
 class DX11Game : public Game {
 public:
@@ -12,5 +13,8 @@ public:
 
 	void GameUpdate(const float _deltaTime) override;
 	void GameRender() override;
+
+public:
+	Triangle* triangle;
 };
 

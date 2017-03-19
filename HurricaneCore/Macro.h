@@ -8,20 +8,26 @@
 //
 // Author:			Edwin Chen
 // Created:			Apr 05, 2016
-// Last updated:	Mar 12, 2017
+// Last updated:	Mar 18, 2017
 //
 //*******************************//
 
 #ifndef _MACRO_H
 #define _MACRO_H
+/////////////////////////////////////////////////////////////////////////
+
+// are we using OpenGL or not?
+//#define HURRICANE_OPENGL
+
+
+
 
 ////// WINDOWS STUFF /////
 #ifndef WINDOWS
 #define WINDOWS
-#include <Windows.h>
-#include <stdlib.h>
-#include <string.h>
-#include <tchar.h>
+	#include <Windows.h>
+	#include <stdlib.h>
+	#include <tchar.h>
 #endif
 
 
@@ -54,8 +60,6 @@
 
 #include <functional>
 
-// Typedefine primitve types
-//#include "PrimitiveTypes.h"
 
 //////// Macros /////////
 

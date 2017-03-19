@@ -3,7 +3,7 @@
 
 #include "Macro.h"
 #include "Window.h"
-#include "AbstractRenderer.h"
+#include "DXRenderer.h"
 #include "HProperties.h"
 
 #define GAME Game::GetInstance()
@@ -32,7 +32,7 @@ protected:
 	static Game* _instance;
 	bool _isRunning;
 public:
-	AbstractRenderer* renderer;
+	DXRenderer* renderer;
 	Window* gameWindow;
 	HProperties* hProps;
 };

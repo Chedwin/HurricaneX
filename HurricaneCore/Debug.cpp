@@ -11,6 +11,12 @@ void Debug::Init() {
 	out.close();
 }
 
+void Debug::ConsoleLog(const STRING& _msg) 
+{
+	// Console application
+}
+
+
 void Debug::Log(const EMessageType MsgType, const STRING& comments)
 {
 	std::ofstream out;

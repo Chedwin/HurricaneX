@@ -36,6 +36,8 @@ private:
 
 public:
 	static void Init();
+	static void ConsoleLog(const STRING& _msg);
+
 	static void Log(const EMessageType MsgType, const STRING& comments);
 	static void Log(const EMessageType MsgType, const STRING& Class, const STRING& Method, const STRING& timestamp, const STRING& file, const int& line, const STRING& comments);
 };

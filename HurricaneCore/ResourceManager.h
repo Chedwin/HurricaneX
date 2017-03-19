@@ -46,8 +46,7 @@ public:
 
 
 template <class Type>
-class ResourceManager
-{
+class ResourceManager {
 public:
 	VECTOR(Type*) resourceVector;
 	MAP(STRING, ResourceHandle<Type>)* resourceMap;

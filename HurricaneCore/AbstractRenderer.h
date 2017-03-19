@@ -5,13 +5,16 @@
 
 class AbstractRenderer {
 protected:
-	AbstractRenderer(const Window& _wnd) {}
+	AbstractRenderer(Window& _wnd) {}
 public:
 	virtual ~AbstractRenderer() {}
 
 	virtual void BeginFrame() = 0;
 	virtual void Render() = 0;
 	virtual void EndFrame() = 0;
+
+protected:
+	Window* _windowRef = nullptr;
 };
 
 #endif

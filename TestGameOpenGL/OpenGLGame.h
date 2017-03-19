@@ -13,4 +13,3 @@ public:
 	void GameUpdate(const float _deltaTime) override;
 	void GameRender() override;
 };
-
