@@ -1,6 +1,6 @@
 #include "GLRenderer.h"
 
-GLRenderer::GLRenderer(const Window& _wnd) : AbstractRenderer(_wnd)
+GLRenderer::GLRenderer(Window& _wnd) : AbstractRenderer(_wnd)
 {
 	GLenum error = glewInit();
 	if (error != GLEW_OK) {
@@ -43,5 +43,5 @@ void GLRenderer::Render()
 
 void GLRenderer::EndFrame()
 {
-	SwapBuffers(Window::hDC);
+	//SwapBuffers(Window::hDC);
 }

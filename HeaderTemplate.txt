@@ -1,0 +1,23 @@
+//*******************************//
+//
+// Name:			.h
+// Description:		
+//					
+//
+// Author:			Edwin Chen
+// Special Thanks:  
+//
+// Created:			Jan 01, 2017
+// Last updated:	Jan 01, 2017
+//
+//*******************************//
+
+
+#ifndef _CLASS_NAME_H
+#define _CLASS_NAME_H
+
+#include "Macro.h"
+
+
+
+#endif

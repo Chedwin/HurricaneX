@@ -21,8 +21,10 @@
 
 
 class GLRenderer : public AbstractRenderer {
+	friend class Game;
+protected:
+	GLRenderer(Window& _wnd);
 public:
-	GLRenderer(const Window& _wnd);
 	~GLRenderer();
 
 	void BeginFrame() override;

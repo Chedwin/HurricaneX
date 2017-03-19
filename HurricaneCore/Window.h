@@ -4,11 +4,13 @@
 #include "Macro.h"
 
 class Window {
-public:
+	friend class Game;
+protected:
 	Window(HINSTANCE _hInst, int _width, int _height);
+public:
 	~Window();
 
-	HWND GetHandle() const;
+	HWND GetHandle();
 	void SetWindowSize(const int _w, const int _h);
 
 	inline int GetWidth() const {
@@ -29,7 +31,7 @@ protected:
 	HINSTANCE _hInst;
 	int _width, _height;
 public:
-	static HDC hDC;
+	//static HDC hDC;
 };
 
 #endif

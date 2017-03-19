@@ -17,14 +17,13 @@ Game* Game::GetInstance()
 
 Game::Game() : gameWindow(nullptr), renderer(nullptr)
 {
-	
+	// empty
 }
 
 
 Game::~Game()
 {
-	delete renderer;
-	delete gameWindow;
+	DestroySystems();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +35,8 @@ bool Game::InitEngine(HINSTANCE _hInst)
 	hProps = H_PROPERTIES;
 
 	gameWindow = new Window(_hInst, hProps->GetVideoProperties()->screenWidth , hProps->GetVideoProperties()->screenHeight);
-#define HURRICANE_OPENGL
+
+//#define HURRICANE_OPENGL
 #if defined(HURRICANE_OPENGL)
 	/*GLenum error = glewInit();
 	if (error != GLEW_OK) {
@@ -47,11 +47,25 @@ bool Game::InitEngine(HINSTANCE _hInst)
 #else
 	renderer = new DXRenderer(*gameWindow);
 #endif
+
+	if (!renderer) {
+		MessageBox(0, "Renderer FAILED to initialize!", "FATAL ERROR", 0);
+		return false;
+	}
+
 	return true;
 }
 
 void Game::DestroySystems()
 {
+	if (renderer)
+		delete renderer;
+
+	if (gameWindow)
+		delete gameWindow;
+
+	renderer = nullptr;
+	gameWindow = nullptr;
 }
 
 void Game::Run(HINSTANCE _hInst) 
@@ -60,7 +74,7 @@ void Game::Run(HINSTANCE _hInst)
 
 	if (!init)
 	{
-		MessageBox(gameWindow->GetHandle(), "Engine initialization FAILED", "Fatal Error", 0);
+		MessageBox(0, "Engine initialization FAILED", "Fatal Error", 0);
 		exit(0);
 	}
 	else
@@ -92,22 +106,25 @@ void Game::GameLoop()
 			if (msg.message == WM_QUIT)
 				break;
 		}
+		else 
+		{
+			// TODO: get frames per second for timestep stuff
+			float timeStep = 0.2f; 
+			EngineUpdate(timeStep);
+			GameUpdate(timeStep);
 
-		// TODO: get frames per second for timestep stuff
-		float timeStep = 0.2f; 
-		EngineUpdate(timeStep);
-		GameUpdate(timeStep);
+			renderer->BeginFrame();
 
-		renderer->BeginFrame();
+			// Game stuff goes in between here!
+			GameRender();
 
-		// Game stuff goes in between here!
-		GameRender();
+			renderer->EndFrame();
 
-		renderer->EndFrame();
-
-//#if defined(HURRICANE_OPENGL)
-//		SwapBuffers(Window::hDC);
-//#endif
+	//#if defined(HURRICANE_OPENGL)
+	//		SwapBuffers(Window::hDC);
+	//#endif
+		
+		}
 	}
 
 }
