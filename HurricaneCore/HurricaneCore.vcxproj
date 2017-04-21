@@ -147,28 +147,31 @@
     <ClInclude Include="AbstractRenderer.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DXApp.h" />
     <ClInclude Include="DXRenderer.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectScript.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="HMath.h" />
     <ClInclude Include="HProperties.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DXApp.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectScript.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="HProperties.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,19 +16,13 @@
 #define _MACRO_H
 /////////////////////////////////////////////////////////////////////////
 
-// are we using OpenGL or not?
-//#define HURRICANE_OPENGL
-
-
-
 
 ////// WINDOWS STUFF /////
-#ifndef WINDOWS
-#define WINDOWS
-	#include <Windows.h>
-	#include <stdlib.h>
-	#include <tchar.h>
-#endif
+#define WIN32_LEAN_AND_MEAN // only include Win32 stuff we need (no networking, etc.)
+
+#include <Windows.h>
+#include <stdlib.h>
+#include <tchar.h>
 
 
 
@@ -127,4 +121,4 @@
 
 
 /////////////////////////////////////////////////////////////////////////
-#endif
+#endif // _MACRO_H

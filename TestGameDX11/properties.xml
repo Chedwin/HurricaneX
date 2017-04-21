@@ -3,7 +3,7 @@
 <Root>
 
   <GeneralProperty>
-    <name>Hurricane Solar System Simulator 2016</name>
+    <name>DirectX Test Game</name>
     <author>Edwin Chen</author>
   </GeneralProperty>
 
@@ -18,6 +18,7 @@
     <height>768</height>
     <drawdistance>100.0</drawdistance>
     <fullscreen>0</fullscreen>
+    <usingOpenGL>false</usingOpenGL>
   </VideoProperty>
 
 </Root>

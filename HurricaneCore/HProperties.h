@@ -6,11 +6,9 @@
 //
 // Author:			Edwin Chen, Mathieu Violette, James Sholdice, & Nathan Senter
 // Created:			Sep 18, 2016
-// Last updated:	Mar 12, 2016
+// Last updated:	Apr 07, 2017
 //
 //*******************************//
-
-#pragma once
 
 #ifndef HURRICANE_PROPERTIES_H
 #define HURRICANE_PROPERTIES_H
@@ -72,6 +70,7 @@ public:
 		int screenHeight;
 		float drawDistance;
 		int fullScreen;
+		bool useOpenGL;
 
 		void ReadValues();
 		void WriteValues();

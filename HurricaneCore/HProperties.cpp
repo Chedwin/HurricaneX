@@ -109,6 +109,9 @@ void HProperties::VideoProperties::WriteValues()
 	element->SetText(drawDistance);
 	element = element->NextSiblingElement("fullscreen");
 	element->SetText(fullScreen);
+
+	element = element->NextSiblingElement("usingOpenGL");
+	element->SetText(useOpenGL);
 }
 
 
