@@ -5,7 +5,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Oct 01, 2016
-// Last updated:	Mar 12, 2017
+// Last updated:	Mar 23, 2017
 //
 //*******************************//
 
@@ -100,7 +100,6 @@ public:
 			{
 				if (iter->first == name)
 				{
-					Debug::ConsoleError("\"" + name + "\" resource already exists");
 					return iter->second;
 				}
 			}

@@ -10,7 +10,7 @@
 // Special Thanks:  Mathieu Violette, James Sholdice, Nathan Senter, Unity, Aiden Dearing, House Yokeswaran, Mark Seaman
 //
 // Created:			Sep 30, 2016
-// Last updated:	Mar 18, 2017
+// Last updated:	Mar 25, 2017
 //
 //*******************************//
 
@@ -20,7 +20,8 @@
 
 
 #include "Macro.h"
-
+#include "Transform.h"
+#include "GameObjectScript.h"
 
 // forward declare 
 class Scene;
@@ -36,6 +37,20 @@ public:
 	virtual void Render();
 
 
+	// Child objects
+	void AddChild(GameObject& g);
+	void RemoveChild(GameObject& g);
+	void RemoveChild(const STRING& n);
+	void ClearAllChildren();
+	GameObject* GetChild(const STRING& name);
+
+	// Tags
+	void AddTag(const STRING& _tag);
+	bool HasTag(const STRING& _tag);
+	void RemoveTag(const STRING& _tag);
+
+
+	// Inline helper functions
 	inline bool CheckEnabled() const {
 		return _isEnabled;
 	}
@@ -54,6 +69,20 @@ protected:
 	STRING _name;
 	bool _isEnabled = false;
 public:
+	VECTOR(STRING) tags;
+	VECTOR(GameObject*) childObjects;
+
+	// Pointer to itself (Unity-like)
+	GameObject* gameObject;
+
+	// Transform fields
+	Transform transform;
+
+	// Scripting behaviour
+	// Allows for multiple scripts to be attached to this game object
+	GameObjectMultiScript* scripts;
+
+	// Which scene am I in?
 	Scene* scene;
 };
 

@@ -11,10 +11,7 @@ void Debug::Init() {
 	out.close();
 }
 
-void Debug::ConsoleLog(const STRING& _msg) 
-{
-	// Console application
-}
+
 
 
 void Debug::Log(const EMessageType MsgType, const STRING& comments)
@@ -62,3 +59,12 @@ void Debug::Log(const EMessageType MsgType, const STRING & Class, const STRING &
 
 	out.close(); // close the debug file
 }
+
+
+#ifdef	HURRICANE_OPENGL
+void Debug::ConsoleLog(const STRING& _msg) 
+{
+	// Console application
+	COUT << _msg << ENDL;
+}
+#endif

@@ -1,40 +1,28 @@
 #pragma once
 
-#include <Macro.h>
+#include <Vertex.h>
 #include <DXRenderer.h>
-#include <DirectXMath.h>
-
-
-struct Vertex //Overload Vertex Structure
-{
-	Vertex() {}
-	Vertex(float x, float y, float z,
-		float cr, float cg, float cb, float ca)
-		: pos(x, y, z), color(cr, cg, cb, ca) {}
-
-	DirectX::XMFLOAT3 pos;
-	DirectX::XMFLOAT4 color;
-};
 
 class Triangle {
 public:
-	Triangle( DXRenderer& _renderer);
+	Triangle();
 	~Triangle();
 
-	void Draw( DXRenderer& _renderer);
+	bool InitTriangle(DXRenderer& renderer);
+	void Render();
 
-	void CreateMesh( DXRenderer& _renderer);
-	void CreateShaders( DXRenderer& _renderer);
-	void CreateRenderStates(DXRenderer& _renderer);
+public:
+	ID3D11Buffer* triangleVertBuffer;
 
+	ID3D11VertexShader* VS;
+	ID3D11PixelShader* PS;
 
-protected:
-	ID3D11Buffer* m_vertexBuffer = nullptr;
-	ID3D11VertexShader* m_vertexShader = nullptr;
-	ID3D11PixelShader* m_pixelShader = nullptr;
-	ID3D11InputLayout* m_inputLayout = nullptr; // used to link shaders
-	ID3D11RasterizerState* m_rasterizerState = nullptr;
-	ID3D11DepthStencilState* m_depthState = nullptr;
-	ID3D11BlendState* m_blendState = nullptr;
+	ID3D10Blob* VS_Buffer = NULL;
+	ID3D10Blob* PS_Buffer = NULL;
+	
+	ID3D10Blob* Errors;
+	
+	ID3D11InputLayout* vertLayout;
 
+	DXRenderer* _renderer;
 };
