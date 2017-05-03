@@ -1,6 +1,7 @@
 #include "Triangle.h"
 
-Triangle::Triangle() : VS(nullptr), PS(nullptr), _renderer(nullptr)
+Triangle::Triangle() 
+	: VS(nullptr), PS(nullptr), _renderer(nullptr)
 {
 	// empty
 }
@@ -97,9 +98,5 @@ bool Triangle::InitTriangle(DXRenderer& renderer)
 
 void Triangle::Render()
 {
-	//if (!_renderer) {
-	//	_renderer = &renderer;
-	//}
-
 	_renderer->GetDeviceContext()->Draw(3, 0);
 }

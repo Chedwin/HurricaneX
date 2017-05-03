@@ -1,22 +1,46 @@
-//#ifndef _ABSTRACT_RENDERER_H
-//#define _ABSTRACT_RENDERER_H
+//*******************************//
 //
-//#include "Window.h"
+// Name:			AbstractRenderer.h
+// Description:		
+//					
 //
-//class AbstractRenderer {
-//protected:
-//	AbstractRenderer(Window& _wnd) {}
-//public:
-//	virtual ~AbstractRenderer() {}
+// Author:			Edwin Chen
+// Special Thanks:  
 //
-//	virtual void BeginFrame() = 0;
-//	virtual void Render() = 0;
-//	virtual void EndFrame() = 0;
+// Created:			Sep 01, 2017
+// Last updated:	Apr 24, 2017
 //
-//	virtual void ClearScreen(float r, float g, float b) {}
-//
-//protected:
-//	Window* _windowRef = nullptr;
-//};
-//
-//#endif
+//*******************************//
+
+
+#ifndef _ABSTRACT_RENDERER_H
+#define _ABSTRACT_RENDERER_H
+
+#include "Macro.h"
+
+class AbstractRenderer 
+{
+protected:
+	AbstractRenderer() {}
+public:
+	virtual ~AbstractRenderer() {}
+
+	virtual bool InitRenderer(HWND hwnd, int width, int height) {
+		_hwnd = hwnd;
+		_width = width;
+		_height = height;
+
+		return true;
+	}
+
+	virtual void BeginFrame() = 0;
+	virtual void EndFrame() = 0;
+
+	virtual void ClearScreen(float r, float g, float b) {}
+
+protected:
+	HWND _hwnd;
+	int _width, _height;
+};
+
+#endif

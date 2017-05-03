@@ -8,7 +8,7 @@
 // Special Thanks:  Daniel Argento
 //
 // Created:			Mar 11, 2017
-// Last updated:	Apr 21, 2017
+// Last updated:	Apr 28, 2017
 //
 //*******************************//
 
@@ -19,10 +19,6 @@
 #include "Macro.h"
 #include "AbstractRenderer.h"
 
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3d10.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-
 // DIRECTX 
 #include <DXGI.h>
 #include <d3d11.h>
@@ -30,14 +26,19 @@
 #include <d3dcompiler.h>
 #include <d3d10.h>
 
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d3d10.lib")
+#pragma comment(lib, "d3dcompiler.lib")
+
+
 class DXRenderer 
-	//: public AbstractRenderer 
+	: public AbstractRenderer 
 {
 	friend class Game;
 	friend class DXApp;
 protected:
 	DXRenderer();
-	bool CreateDeviceAndRenderTarget(HWND hwnd, int width, int height);
+	bool CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, bool isFullscreen);
 
 public:
 	~DXRenderer();
@@ -52,14 +53,20 @@ public:
 
 
 protected:
-	IDXGISwapChain* swapChain = nullptr;
+	// Device = virtual representation of your video adapter
 	ID3D11Device* d3d11device = nullptr;
-	ID3D11DeviceContext* deviceContext = nullptr;
 
-	// render target
+	// Device Context = manager for the GPU and renderering pipeline
+	ID3D11DeviceContext* deviceContext = nullptr;
+	
+	// Swap Chain = series of buffers which take turns being rendered
+	// NOTE: this doesn't belong to Direct3D but to DXGI the DirectX hardware interface
+	IDXGISwapChain* swapChain = nullptr;
+
+	// Render target = COM object that maintains a location in video memory for you to render to
 	ID3D11RenderTargetView* renderTargetView = nullptr;
 
-	D3D11_TEXTURE2D_DESC m_backBufferDesc;
+	//D3D11_TEXTURE2D_DESC m_backBufferDesc;
 
 public:
 	int width, height;
