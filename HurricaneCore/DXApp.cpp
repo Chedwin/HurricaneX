@@ -1,4 +1,6 @@
 #include "DXApp.h"
+#include "DXRenderer.h"
+#include "GLRenderer.h"
 
 // STATIC GAME INSTANCE
 
@@ -18,7 +20,7 @@ DXApp* DXApp::GetDXApp()
 // CONSTUCTOR(S) & DESTRUCTOR
 
 DXApp::DXApp() 
-	: _dxRenderer(nullptr), _fpsCounter(nullptr),
+	: _renderer(nullptr), _fpsCounter(nullptr),
 	_isFullScreen(false), _width(0), _height(0), 
 	_hwnd(NULL), _hInstance(NULL)
 {
@@ -27,10 +29,10 @@ DXApp::DXApp()
 
 DXApp::~DXApp()
 {
-	if (_dxRenderer)
-		delete _dxRenderer;
+	if (_renderer)
+		delete _renderer;
 
-	_dxRenderer = nullptr;
+	_renderer = nullptr;
 
 	// Show the mouse cursor
 	ShowCursor(true);
@@ -159,9 +161,9 @@ bool DXApp::InitWindow(HINSTANCE hInstance, int width, int height, bool isFullsc
 
 bool DXApp::InitRenderer()
 {
-	_dxRenderer = new DXRenderer();
+	_renderer = new DXRenderer();
 
-	if (!_dxRenderer->CreateDeviceAndRenderTarget(_hwnd, _width, _height, _isFullScreen)) 
+	if (!_renderer->InitRenderer(_hwnd, _width, _height, _isFullScreen)) 
 	{
 		MessageBox(NULL, "Initialization of DirectX 11 FAILED", "FATAL ERROR", 0);
 		return false;
@@ -204,14 +206,14 @@ int DXApp::MessageLoop()
 			Update(2.0f);
 
 			// Pre-render
-			_dxRenderer->BeginFrame();
+			_renderer->BeginFrame();
 
 			//*** Draw stuff HERE ***//
 			Render(2.0f);
 			//***********************//
 
 			// Post-render (back buffering)
-			_dxRenderer->EndFrame();
+			_renderer->EndFrame();
 
 			_fps = _fpsCounter->End();
 		}

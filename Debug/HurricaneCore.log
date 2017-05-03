@@ -1,2 +1,11 @@
 ﻿  DXApp.cpp
+d:\users\edwin\github\hurricanex\hurricanecore\abstractrenderer.h(38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\users\edwin\github\hurricanex\hurricanecore\abstractrenderer.h(39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  Compiling...
+  DXRenderer.cpp
+d:\users\edwin\github\hurricanex\hurricanecore\abstractrenderer.h(38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\users\edwin\github\hurricanex\hurricanecore\abstractrenderer.h(39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\users\edwin\github\hurricanex\hurricanecore\dxrenderer.cpp(31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
   HurricaneCore.vcxproj -> D:\Users\edwin\GitHub\HurricaneX\Debug\HurricaneCore.lib

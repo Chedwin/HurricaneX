@@ -21,15 +21,15 @@ DXRenderer::~DXRenderer()
 	renderTargetView->Release();
 }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Create the DirectX 11 Swap chain, device context, etc.
 
 bool DXRenderer::CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, bool isFullscreen)
 {
-	DXRenderer::width = width;
-	DXRenderer::height = height;
-
+	AbstractRenderer::SetSize(width, height);
+	AbstractRenderer::SetWindow(hwnd);
 
 	//Describe our Buffer
 	DXGI_MODE_DESC bufferDesc;
@@ -110,6 +110,10 @@ bool DXRenderer::CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, b
 	return true;
 }
 
+bool DXRenderer::InitRenderer(const HWND & hwnd, int width, int height, bool fullscreen)
+{
+	return CreateDeviceAndRenderTarget(hwnd, width, height, fullscreen);
+}
 
 void DXRenderer::CreateViewPort() 
 {
@@ -134,8 +138,8 @@ void DXRenderer::BeginFrame()
 
 	viewport.TopLeftX	= 0;
 	viewport.TopLeftY	= 0;
-	viewport.Width		= (FLOAT)DXRenderer::width;
-	viewport.Height		= (FLOAT)DXRenderer::height;
+	viewport.Width		= (FLOAT)AbstractRenderer::_width;
+	viewport.Height		= (FLOAT)AbstractRenderer::_height;
 
 	deviceContext->RSSetViewports(1, &viewport);
 

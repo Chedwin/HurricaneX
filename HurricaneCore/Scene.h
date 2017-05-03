@@ -9,7 +9,7 @@
 //					
 //
 // Created:			Mar 22, 2016
-// Last updated:	Mar 25, 2017
+// Last updated:	May 03, 2017
 //
 //*******************************//
 
@@ -19,16 +19,17 @@
 #include "Macro.h"
 #include "HMath.h"
 #include "GameObject.h"
-//#include "Camera.h"
+#include "Camera.h"
 
 // forward declare the Game Scene Manager
-class Game;
+class DXApp;
 
 //#define ROOT_NODE Scene::_rootNode.get()
 #define ROOT_NAME "RootNode"
 
 class Scene {
 	friend class Game;
+	friend class DXApp;
 public:
 	Scene();
 	virtual ~Scene();

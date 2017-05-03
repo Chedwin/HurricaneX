@@ -87,9 +87,7 @@ bool Triangle::InitTriangle(DXRenderer& renderer)
 
 	
 	_renderer->GetDeviceContext()->IASetInputLayout(vertLayout);
-	
-	
-	
+		
 	_renderer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 

@@ -7,7 +7,6 @@ Scene::Scene()
 {
 	// Set up root node
 	_rootNode.reset(nullptr);
-	//_rootNode = new GameObject("RootNode");
 
 	_rootNode.reset(new GameObject(*this, ROOT_NAME));
 

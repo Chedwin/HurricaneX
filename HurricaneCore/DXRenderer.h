@@ -8,7 +8,7 @@
 // Special Thanks:  Daniel Argento
 //
 // Created:			Mar 11, 2017
-// Last updated:	Apr 28, 2017
+// Last updated:	May 02, 2017
 //
 //*******************************//
 
@@ -31,10 +31,8 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 
-class DXRenderer 
-	: public AbstractRenderer 
+class DXRenderer : public AbstractRenderer 
 {
-	friend class Game;
 	friend class DXApp;
 protected:
 	DXRenderer();
@@ -42,7 +40,7 @@ protected:
 
 public:
 	~DXRenderer();
-
+	bool InitRenderer(const HWND& hwnd, int width, int height, bool fullscreen) final;
 	void CreateViewPort();
 
 	void BeginFrame();
@@ -66,10 +64,6 @@ protected:
 	// Render target = COM object that maintains a location in video memory for you to render to
 	ID3D11RenderTargetView* renderTargetView = nullptr;
 
-	//D3D11_TEXTURE2D_DESC m_backBufferDesc;
-
-public:
-	int width, height;
 };
 
 

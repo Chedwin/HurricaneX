@@ -1,44 +1,56 @@
-//#include "GLRenderer.h"
-//
-//GLRenderer::GLRenderer() : AbstractRenderer(_wnd)
-//{
-//	GLenum error = glewInit();
-//	if (error != GLEW_OK) {
-//		MessageBox(_wnd.GetHandle(), "GLEW initialization FAILED", "Error", 0);
-//		exit(0);
-//	}
-//
-//	glEnable(GL_CULL_FACE);
-//	glEnable(GL_DEPTH_TEST);
-//	glCullFace(GL_FRONT);
-//	glDepthFunc(GL_LESS);
-//	glDepthMask(GL_TRUE);
-//	glFrontFace(GL_CCW);
-//	glEnable(GL_BLEND);
-//	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-//
-//	glViewport(0, 0, _wnd.GetWidth(), _wnd.GetHeight());
-//}
-//
-//GLRenderer::~GLRenderer()
-//{
-//	// empty
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//void GLRenderer::BeginFrame()
-//{
-//	// Accept fragment if it closer to the camera than the former one
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//	// To operate on model-view matrix
-//	glMatrixMode(GL_MODELVIEW);
-//	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-//}
-//
-//
-//void GLRenderer::EndFrame()
-//{
-//	//SwapBuffers(Window::hDC);
-//}
+#include "GLRenderer.h"
+
+// CONSTRUCTOR(S) / DESTRUCTOR
+
+GLRenderer::GLRenderer() : AbstractRenderer()
+{
+	_width = _height = 0;
+}
+
+GLRenderer::~GLRenderer()
+{
+	// empty
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INIT FUNCTIONS
+
+bool GLRenderer::InitOpenGLDevice(const HWND & hwnd, int width, int height, bool fullscreen)
+{
+	AbstractRenderer::SetSize(width, height);
+	AbstractRenderer::SetWindow(hwnd);
+
+	GLenum error = glewInit();
+	if (error != GLEW_OK) {
+		MessageBox(NULL, "GLEW initialization FAILED", "FATAL ERROR", 0);
+		return false;
+	}
+
+	glViewport(0, 0, width, height);
+
+	return true;
+}
+
+bool GLRenderer::InitRenderer(const HWND & hwnd, int width, int height, bool fullscreen)
+{
+	return InitOpenGLDevice(hwnd, width, height, fullscreen);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GLRenderer::BeginFrame()
+{
+	// Accept fragment if it closer to the camera than the former one
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// To operate on model-view matrix
+	glMatrixMode(GL_MODELVIEW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+
+void GLRenderer::EndFrame()
+{
+	//SwapBuffers(Window::hDC);
+}

@@ -4,7 +4,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 // CONSTRUCTOR(S) / DESTRUCTOR
-GameObject::GameObject(Scene& sc, const STRING & name): gameObject(this)
+
+GameObject::GameObject(Scene& sc, const STRING & name) 
+	: gameObject(this)
 {
 	if (name == "") 
 		SetName("NewGameObject");
@@ -32,6 +34,8 @@ GameObject::~GameObject()
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+
+// UPDATE & RENDERS
 
 void GameObject::Update(const float _deltaTime)
 {

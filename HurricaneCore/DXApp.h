@@ -8,7 +8,7 @@
 // Special Thanks:  Daniel Argento, Mark Seaman, Scott Fielder
 //
 // Created:			Apr 15, 2017
-// Last updated:	May 02, 2017
+// Last updated:	May 03, 2017
 //
 //*******************************//
 
@@ -61,7 +61,7 @@ public:
 protected:
 	static DXApp*		_dxAppInstance;
 
-	DXRenderer*			_dxRenderer;
+	DXRenderer*		    _renderer;
 
 	FPSCounter*			_fpsCounter;
 

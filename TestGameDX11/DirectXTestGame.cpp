@@ -23,7 +23,7 @@ bool DirectXTestGame::InitGame()
 	triangle = nullptr;
 	triangle = new Triangle();
 
-	if (!triangle->InitTriangle(*this->_dxRenderer)) 
+	if (!triangle->InitTriangle(*this->_renderer)) 
 	{
 		MessageBox(NULL, "Triangle initialization FAILED", "FATAL ERROR", 0);
 		return false;

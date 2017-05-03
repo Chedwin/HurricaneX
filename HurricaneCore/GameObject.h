@@ -10,7 +10,7 @@
 // Special Thanks:  Mathieu Violette, James Sholdice, Nathan Senter, Unity, Aiden Dearing, House Yokeswaran, Mark Seaman
 //
 // Created:			Sep 30, 2016
-// Last updated:	Mar 25, 2017
+// Last updated:	May 03, 2017
 //
 //*******************************//
 
@@ -30,6 +30,11 @@ class GameObject {
 public:
 	explicit GameObject(Scene& sc, const STRING& name = "");
 	virtual ~GameObject();
+
+
+	GameObject() = delete;
+	GameObject(const GameObject&) = delete;
+
 
 	// "CAN" BE OVERRIDEN BY DERIVED CLASSES
 	virtual void Update(const float _deltaTime);
