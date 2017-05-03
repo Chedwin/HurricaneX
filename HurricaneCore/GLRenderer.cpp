@@ -1,6 +1,6 @@
 //#include "GLRenderer.h"
 //
-//GLRenderer::GLRenderer(Window& _wnd) : AbstractRenderer(_wnd)
+//GLRenderer::GLRenderer() : AbstractRenderer(_wnd)
 //{
 //	GLenum error = glewInit();
 //	if (error != GLEW_OK) {
@@ -37,9 +37,6 @@
 //	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 //}
 //
-//void GLRenderer::Render()
-//{
-//}
 //
 //void GLRenderer::EndFrame()
 //{
