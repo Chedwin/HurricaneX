@@ -5,7 +5,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Sep 28, 2016
-// Last updated:	May 03, 2017
+// Last updated:	Sep 07, 2017
 //
 //*******************************//
 
@@ -13,49 +13,44 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
+
 #include "Macro.h"
 #include "HMath.h"
 #include "GameObject.h"
 
-class Scene;
 
-class Camera : public GameObject 
-{
-	friend class Scene;
+#include "d3dUtil.h"
+#include "Transform.h"
+
+class Camera : public GameObject {
+	friend class Graphics;
 protected:
-	explicit Camera(Scene& sc);
+	explicit Camera(ID3D11Device& _dev, const STRING& camName="");
+	void InitCamera(ID3D11Device& _device);
+
 public:
-	virtual ~Camera();
+	~Camera() final;
 
-	// ensure we don't have a default and move constructors
-	Camera() = delete;
-	Camera(const Camera&) = delete;
+	void Update(const float _dt);
+	void Render();
 
-
-	virtual void Update(const float _deltaTime) override;
-	virtual void Render() override;
-
-
-
-	inline void SetPostion(const VEC3& newPos) {
-		gameObject->transform.position = newPos;
-	}
-	inline void SetUp(const VEC3& newUp) {
-		_up = newUp;
-	}
-	inline void SetDir(const VEC3& newDir) {
-		_dir = newDir;
+	inline void SetDXDevice(ID3D11Device& _device) {
+		device = &_device;
 	}
 
-protected:
-	VEC3 _dir, _up;
+	inline MAT4 GetViewMatrix() const {
+		return viewMatrix;
+	}
 
-//	MATRIX4 _projectionMatrix;
-//	MATRIX4 _viewMatrix;
-//
-//
-//public:
-//	Frustum frustum;
+public:
+	VEC3 dir, up;
+
+	MAT4 viewMatrix;
+	MAT4 projMatrix;
+
+	GameObject* camera; // setting pointer to itself
+
+	ID3D11Device* device;
 };
 
 #endif

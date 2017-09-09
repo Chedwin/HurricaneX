@@ -1,38 +1,33 @@
 #include "DirectXTestGame.h"
+#include "Debug.h"
 
-
+#include <LevelManager.h>
+#include "StartLevel.h"
 
 DirectXTestGame::DirectXTestGame() 
-	: DXApp(), triangle(nullptr)
+	: HXApp(), triangle(nullptr)
 {
-	_dxAppInstance = this;
+	_hXAppInstance = this;
 }
 
 
-DirectXTestGame::~DirectXTestGame()
-{
-	if (triangle)
-		delete triangle;
+DirectXTestGame::~DirectXTestGame() {
 
-	triangle = nullptr;
 }
 
 
-bool DirectXTestGame::InitGame()
-{
-	triangle = nullptr;
-	triangle = new Triangle();
+bool DirectXTestGame::InitGame() {
 
-	if (!triangle->InitTriangle(*this->_renderer)) 
-	{
-		MessageBox(NULL, "Triangle initialization FAILED", "FATAL ERROR", 0);
-		return false;
-	}
-
+	LevelManager::LoadInitialLevel(new StartLevel());
+	Debug::ConsoleLog("Test Game has been successfully initializd!");
 	return true;
 }
 
-void DirectXTestGame::Render(const float _dt)
-{
-	triangle->Render();
+
+void DirectXTestGame::Update(const float _dt) {
+	LevelManager::Update();
+}
+
+void DirectXTestGame::Render(const float _dt) {
+	LevelManager::Render();
 }

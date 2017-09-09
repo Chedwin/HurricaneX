@@ -8,7 +8,7 @@
 // Special Thanks:  
 //
 // Created:			Sep 01, 2017
-// Last updated:	May 02, 2017
+// Last updated:	Apr 24, 2017
 //
 //*******************************//
 
@@ -18,31 +18,30 @@
 
 #include "Macro.h"
 
-class AbstractRenderer {
+class AbstractRenderer 
+{
 protected:
 	AbstractRenderer() {}
 public:
 	virtual ~AbstractRenderer() {}
 
-	virtual bool InitRenderer(const HWND& hwnd, int width, int height, bool fullscreen) = 0;
+	virtual bool InitRenderer(HWND hwnd, int width, int height, bool isFullScreen) {
+		_hwnd = hwnd;
+		_width = width;
+		_height = height;
+		_isFullscreen = isFullScreen;
+
+		return true;
+	}
+
 	virtual void BeginFrame() = 0;
 	virtual void EndFrame() = 0;
-
-	virtual void ClearScreen(float r, float g, float b) {}
-
-
-	inline void SetWindow(const HWND& hwnd) {
-		_hwnd = hwnd;
-	}
-	inline void SetSize(float w, float h) {
-		_width = w;
-		_height = h;
-	}
+	virtual void ClearScreen(float r, float g, float b) = 0;
 
 protected:
-	HWND _hwnd;
-	int _width;
-	int _height;
+	HWND	_hwnd;
+	int		_width, _height;
+	bool	_isFullscreen;
 };
 
 #endif

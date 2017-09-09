@@ -8,7 +8,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Apr 05, 2016
-// Last updated:	Mar 18, 2017
+// Last updated:	Jun 09, 2017
 //
 //*******************************//
 
@@ -16,6 +16,20 @@
 #define _MACRO_H
 /////////////////////////////////////////////////////////////////////////
 
+/// IMPORTANT NOTE!!!
+#pragma region Define OpenGL? 
+/*
+If HURRICANE_OPENGL is defined below then 
+	all preprocessor statements: 
+		#ifdef HURRICANE_OPENGL 
+	will be TRUE
+*/
+
+//#define HURRICANE_OPENGL 
+
+#pragma endregion
+
+/////////////////////////////////////////////////////////////////////////
 
 ////// WINDOWS STUFF /////
 #define WIN32_LEAN_AND_MEAN // only include Win32 stuff we need (no networking, etc.)
@@ -23,6 +37,9 @@
 #include <Windows.h>
 #include <stdlib.h>
 #include <tchar.h>
+#include <io.h>
+#include <fcntl.h>
+
 
 
 
@@ -93,6 +110,8 @@
 // sstream
 #define STRINGSTREAM std::stringstream 
 
+// WSTRING
+#define WSTRING std::wstring
 
 // functional
 #define FUNCTION(U) std::function<U>

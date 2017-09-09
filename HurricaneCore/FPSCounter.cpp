@@ -3,7 +3,7 @@
 UNIQUE_PTR(FPSCounter) FPSCounter::_fpsInstance(nullptr); // Declare static unique pointer
 
 
-FPSCounter * FPSCounter::GetFPSCounter()
+FPSCounter* FPSCounter::GetFPSCounter()
 {
 	if (_fpsInstance.get() == nullptr) 
 		_fpsInstance.reset(new FPSCounter());
@@ -12,77 +12,40 @@ FPSCounter * FPSCounter::GetFPSCounter()
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void FPSCounter::Init(float maxfps)
+FPSCounter::FPSCounter() : _fps(0.0f), _frameCount(0), _maxFPS(1000.0f)
 {
-	SetMaxFPS(maxfps);
+	// empty
 }
+
+FPSCounter::~FPSCounter()
+{
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void FPSCounter::SetMaxFPS(float maxfps)
 {
 	_maxFPS = maxfps;
 }
 
-void FPSCounter::BeginFrame()
+
+void FPSCounter::UpdateFPS() 
 {
-	_startTicks = GetTickCount();
-}
+	_frameCount++;
 
-float FPSCounter::End()
-{
-	CalculateFPS();
-
-	float frameTicks = GetTickCount() - _startTicks;
-
-	if (1000.0f / _maxFPS > frameTicks)
+	if (_interval.value() > 1000 /* milliseconds*/) 
 	{
-		//SDL_Delay(1000.0f / _maxFPS - frameTicks);
+		// save the current counter value to m_fps
+		_fps = _frameCount;
+
+		// reset the counter and the interval
+		_frameCount = 0;
+		_interval.Reset();
 	}
 
-	return _fps;
-}
-
-void FPSCounter::CalculateFPS()
-{
-	// TODO
-	static const int NUM_SAMPLES = 100;
-	static float frameTimes[NUM_SAMPLES];
-	static int currentFrame = 0;
-
-	static float prevTicks = GetTickCount();
-	float currTicks = GetTickCount();
-
-	_frameTime = currTicks - prevTicks;
-	frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
-
-	prevTicks = currTicks;
-
-	int count;
-
-	currentFrame++;
-	if (currentFrame < NUM_SAMPLES)
+	if (1000.0f / _maxFPS > _frameCount) 
 	{
-		count = currentFrame;
-	}
-	else
-	{
-		count = NUM_SAMPLES;
-	}
-
-	float frameTimeAverage = 0;
-	for (int i = 0; i < count; i++)
-	{
-		frameTimeAverage += frameTimes[i];
-	}
-	frameTimeAverage /= count;
-
-	if (frameTimeAverage > 0)
-	{
-		_fps = 1000.0f / frameTimeAverage;
-	}
-	else
-	{
-		_fps = _maxFPS;
-	}
+		Sleep(1000.0f / _maxFPS - _frameCount);	 // equivalent to SDL_Delay	
+	}		
 }

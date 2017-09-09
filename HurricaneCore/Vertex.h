@@ -19,7 +19,9 @@
 #include "Macro.h"
 #include "HMath.h"
 
-struct Vertex //Overload Vertex Structure
+
+//Overload Vertex Structure
+struct Vertex 
 {
 	Vertex() :
 	pos(0.0f, 0.0f, 0.0f) {}
@@ -33,10 +35,6 @@ struct Vertex //Overload Vertex Structure
 
 	DirectX::XMFLOAT3 pos;
 	DirectX::XMFLOAT4 color;
-
-	inline Vertex& operator+(const Vertex& v) {
-		return Vertex(pos.x + v.pos.x, pos.y + v.pos.y, pos.z + v.pos.z);
-	}
 };
 
 #endif

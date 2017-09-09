@@ -9,7 +9,7 @@
 //					
 //
 // Created:			Mar 22, 2016
-// Last updated:	May 03, 2017
+// Last updated:	Sep 07, 2017
 //
 //*******************************//
 
@@ -22,14 +22,13 @@
 #include "Camera.h"
 
 // forward declare the Game Scene Manager
-class DXApp;
+class Game;
 
 //#define ROOT_NODE Scene::_rootNode.get()
 #define ROOT_NAME "RootNode"
 
 class Scene {
 	friend class Game;
-	friend class DXApp;
 public:
 	Scene();
 	virtual ~Scene();
@@ -38,7 +37,7 @@ public:
 	virtual void Update(const float _timeStep);
 	virtual void Render();
 
-	//void SetCamera(Camera* _c);
+	void SetCamera(Camera* _c);
 
 
 	void AddSceneNode(GameObject& g);
@@ -66,8 +65,8 @@ protected:
 	UNIQUE_PTR(GameObject) _rootNode;
 	friend DEFAULT_DELETE(GameObject);
 public:
-	//Camera* mainCamera;
-	//Camera* currentCamera;
+	Camera* mainCamera;
+	Camera* currentCamera;
 };
 
 

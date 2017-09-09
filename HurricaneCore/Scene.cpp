@@ -7,15 +7,14 @@ Scene::Scene()
 {
 	// Set up root node
 	_rootNode.reset(nullptr);
-
-	_rootNode.reset(new GameObject(*this, ROOT_NAME));
+	//_rootNode.reset(new GameObject(*this, ROOT_NAME));
 
 	// Make sure the root node is at the origin
-	//_rootNode->transform.position = ORIGIN;
+	_rootNode->transform.pos = VEC3(0,0,0);
 
-	//// Create the default scene camera
+	// Create the default scene camera
 	//mainCamera = currentCamera = nullptr;
-	//mainCamera = new Camera(this);
+	//mainCamera = new Camera(*this);
 	//mainCamera->SetName("MainCamera");
 	//mainCamera->AddTag("Camera");
 
@@ -32,11 +31,11 @@ Scene::~Scene()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//// CAMERA
-//void Scene::SetCamera(Camera* _c)
-//{
-//	currentCamera = _c;
-//}
+// CAMERA
+void Scene::SetCamera(Camera* _c)
+{
+	currentCamera = _c;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +43,7 @@ Scene::~Scene()
 
 void Scene::Update(const float _timeStep)
 {
-	//currentCamera->Update(_timeStep);
+	currentCamera->Update(_timeStep);
 
 	// NOTE: ANY game object to be instatiated MUST be attached to a scene
 	//		 
@@ -76,7 +75,7 @@ void Scene::Render()
 
 		if (temp && temp->CheckEnabled() && !temp->HasTag("Camera"))
 		{
-			temp->Render();
+			temp->Render(2.0f);
 		}
 	}
 
