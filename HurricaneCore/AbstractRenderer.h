@@ -25,22 +25,23 @@ protected:
 public:
 	virtual ~AbstractRenderer() {}
 
-	virtual bool InitRenderer(HWND hwnd, int width, int height) {
+	virtual bool InitRenderer(HWND hwnd, int width, int height, bool isFullScreen) {
 		_hwnd = hwnd;
 		_width = width;
 		_height = height;
+		_isFullscreen = isFullScreen;
 
 		return true;
 	}
 
 	virtual void BeginFrame() = 0;
 	virtual void EndFrame() = 0;
-
-	virtual void ClearScreen(float r, float g, float b) {}
+	virtual void ClearScreen(float r, float g, float b) = 0;
 
 protected:
-	HWND _hwnd;
-	int _width, _height;
+	HWND	_hwnd;
+	int		_width, _height;
+	bool	_isFullscreen;
 };
 
 #endif

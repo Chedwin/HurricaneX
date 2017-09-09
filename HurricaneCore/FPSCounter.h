@@ -6,7 +6,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Nov 11, 2016
-// Last updated:	May 02, 2017
+// Last updated:	May 08, 2017
 //
 //*******************************//
 
@@ -16,34 +16,67 @@
 
 #include "Macro.h"
 
-#define FPS_COUNTER FPSCounter::GetFPSCounter()
+class Interval {
+	friend class FPSCounter;
+protected:
+	// Ctor
+	inline Interval() : _initialTick(GetTickCount())
+	{
+	}
+
+	// Dtor
+	virtual ~Interval()
+	{
+	}
+
+	inline unsigned int value() const
+	{
+		return GetTickCount() - _initialTick;
+	}
+
+	inline void Reset() 
+	{
+		_initialTick = GetTickCount();
+	}
+
+private:
+	unsigned int _initialTick;
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////
+
+#define FPS_COUNTER FPSCounter::GetFPSCounter()	
 
 class FPSCounter {
 	friend class Game;
 	friend class DXApp;
 protected:
-	void CalculateFPS();
-
-	FPSCounter() {}
-	~FPSCounter() {}
-
+	FPSCounter();
+public:
+	~FPSCounter();
 	static FPSCounter* GetFPSCounter();
 
-	void Init(float maxfps);
 	void SetMaxFPS(float maxfps);
 
-	void BeginFrame();
-	float End(); // will compute FPS
+	void UpdateFPS();
+
+	inline float GetFPS() const {
+		return _fps;
+	}
 
 protected:
 	static UNIQUE_PTR(FPSCounter) _fpsInstance;
 	friend DEFAULT_DELETE(FPSCounter);
 
-	float _maxFPS;
+	float _maxFPS = 1000.0f;
 	int   _startTicks;
 
 	float _fps;
-	float _frameTime;
+	float _frameCount;
+
+	Interval _interval;
 };
+
 
 #endif

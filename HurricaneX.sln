@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HurricaneCore", "HurricaneCore\HurricaneCore.vcxproj", "{DBBBC614-2A11-495B-9210-1F285CB3E06F}"
 EndProject
@@ -17,7 +17,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{9CEE33F9-0061-4C07-A400-96CABCBE7491}"
 	ProjectSection(SolutionItems) = preProject
 		HeaderTemplate.txt = HeaderTemplate.txt
+		Include.txt = Include.txt
 		README.txt = README.txt
+		StaticLib.txt = StaticLib.txt
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AwesomeGame2D", "AwesomeGame2D\AwesomeGame2D.vcxproj", "{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DBBBC614-2A11-495B-9210-1F285CB3E06F} = {DBBBC614-2A11-495B-9210-1F285CB3E06F}
 	EndProjectSection
 EndProject
 Global
@@ -44,6 +51,14 @@ Global
 		{4F624832-1BAB-43AA-9F4F-C471FB6253FC}.Release|x64.Build.0 = Release|x64
 		{4F624832-1BAB-43AA-9F4F-C471FB6253FC}.Release|x86.ActiveCfg = Release|Win32
 		{4F624832-1BAB-43AA-9F4F-C471FB6253FC}.Release|x86.Build.0 = Release|Win32
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Debug|x64.ActiveCfg = Debug|x64
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Debug|x64.Build.0 = Debug|x64
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Debug|x86.ActiveCfg = Debug|Win32
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Debug|x86.Build.0 = Debug|Win32
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Release|x64.ActiveCfg = Release|x64
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Release|x64.Build.0 = Release|x64
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Release|x86.ActiveCfg = Release|Win32
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,5 +66,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DBBBC614-2A11-495B-9210-1F285CB3E06F} = {329A3C0E-6EC4-4A54-820E-819C5C04A3B0}
 		{4F624832-1BAB-43AA-9F4F-C471FB6253FC} = {5D4FFF34-E89C-4FF7-8B6E-2AD8A08A9D0D}
+		{E2ACA975-54AA-4B21-96ED-DEE905A9C80C} = {5D4FFF34-E89C-4FF7-8B6E-2AD8A08A9D0D}
 	EndGlobalSection
 EndGlobal

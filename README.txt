@@ -1,7 +1,7 @@
 Welcome to Hurricane!
 
 Date Created: Jan 20, 2016
-Last Updated: May 02, 2017
+Last Updated: Aug 12, 2017
 
 Primary Author:
 -----------------
@@ -24,12 +24,12 @@ Aiden Dearing
 Domenic Caronzo
 Kris Alexander
 House Yokeswaran
-Nicco Jacinto
+Unity
 
 
 Introduction:
 -----------------
-This is my first ever game engine. It is mainly focused on building 3rd person platformer-like games.
+This is my first ever game engine.
 Hurricane is programmed purely in C++ to allow for fast memory management and efficiency.
 
 
@@ -47,7 +47,8 @@ Assimp					- Model loading (.fbx, .obj, etc.)
 
 Win32					- Windowing system
 						- Some event handling
-DirectX11				- 3D Graphics
+
+DirectX11				- 2D/3D Graphics
 						- Audio
 						- Shaders						
 

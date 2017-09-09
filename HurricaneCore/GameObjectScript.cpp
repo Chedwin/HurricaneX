@@ -1,6 +1,6 @@
 #include "GameObjectScript.h"
 
-// GAME OBJECT SCRIPT
+#pragma region GAME OBJECT SCRIPT
 
 GameObjectScript::GameObjectScript(const STRING& n)
 {
@@ -12,8 +12,9 @@ GameObjectScript::~GameObjectScript()
 	// EMPTY
 }
 
+///////////////////////////
 
-bool GameObjectScript::UpdateScript(GameObject& gameObject, const float _timeStep)
+bool GameObjectScript::UpdateScript(GameObject* gameObject, const float _timeStep)
 {
 	if (userUpdateFunction) {
 		return userUpdateFunction(gameObject, _timeStep);
@@ -21,12 +22,12 @@ bool GameObjectScript::UpdateScript(GameObject& gameObject, const float _timeSte
 	return true;
 }
 
-
+#pragma endregion
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// MULTI-SCRIPTs
+#pragma region MULTI-SCRIPTs
 
 GameObjectMultiScript::GameObjectMultiScript()
 {
@@ -38,8 +39,12 @@ GameObjectMultiScript::~GameObjectMultiScript()
 	ClearAllScripts();
 }
 
-void GameObjectMultiScript::AddScript(const STRING& n, GameObjectScript* script)
+//////////////////////////////
+
+// ADD script (if not already in game object)
+void GameObjectMultiScript::AddScript(GameObjectScript* script)
 {
+	STRING n = script->GetName();
 	auto f = scriptMap.find(n);
 
 	script->SetName(n);
@@ -50,6 +55,8 @@ void GameObjectMultiScript::AddScript(const STRING& n, GameObjectScript* script)
 	scriptMap.insert(PAIR(STRING, GameObjectScript*)(n, script));
 }
 
+
+// DELETE one script
 void GameObjectMultiScript::DeleteScript(const STRING& n)
 {
 	if (scriptMap.size() == 0) {
@@ -64,6 +71,8 @@ void GameObjectMultiScript::DeleteScript(const STRING& n)
 	}
 }
 
+
+// DESTROY ALL
 void GameObjectMultiScript::ClearAllScripts()
 {
 	if (scriptMap.size() > 0)
@@ -79,7 +88,8 @@ void GameObjectMultiScript::ClearAllScripts()
 	scriptMap.clear();
 }
 
-bool GameObjectMultiScript::UpdateAllScripts(GameObject& gameObject, const float _timeStep)
+// UPDATE ALL
+bool GameObjectMultiScript::UpdateAllScripts(GameObject* gameObject, const float _timeStep)
 {
 	bool result = true;
 
@@ -93,3 +103,5 @@ bool GameObjectMultiScript::UpdateAllScripts(GameObject& gameObject, const float
 
 	return result;
 }
+
+#pragma endregion

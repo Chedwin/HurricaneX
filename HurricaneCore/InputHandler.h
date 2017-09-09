@@ -8,7 +8,7 @@
 // Special Thanks:  
 //
 // Created:			Jul 17, 2016
-// Last updated:	May 02, 2017
+// Last updated:	May 20, 2017
 //
 //*******************************//
 
@@ -28,9 +28,21 @@ public:
 
 	static InputHandler* GetInputHandler();
 
+
+	void InitInput();
+
+	void KeyDown(unsigned int);
+	void KeyUp(unsigned int);
+
+	bool IsKeyDown(unsigned int);
+
+private:
+	bool _keys[256];
 protected:
 	static UNIQUE_PTR(InputHandler) _inputHandler;
 	friend DEFAULT_DELETE(InputHandler);
+
+
 };
 
 #endif

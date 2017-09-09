@@ -1,0 +1,27 @@
+// Hurricane Game Engine
+HurricaneCore.lib
+$(SolutionDir)$(Configuration)
+
+
+
+// DirectX 11
+d3d11.lib
+d3d10.lib
+d3dcompiler.lib
+d2d1.lib
+dxgi.lib
+
+
+
+
+// OpenGL
+opengl32.lib
+glew32.lib
+$(SolutionDir)dependencies\OpenGL\lib
+
+
+
+
+// Assimp
+assimp.lib
+$(SolutionDir)\dependencies\assimp\lib\Debug

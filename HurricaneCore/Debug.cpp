@@ -61,10 +61,59 @@ void Debug::Log(const EMessageType MsgType, const STRING & Class, const STRING &
 }
 
 
-#ifdef	HURRICANE_OPENGL
+////////////////////////////////////////////////////////////////////////
+
 void Debug::ConsoleLog(const STRING& _msg) 
 {
 	// Console application
 	COUT << _msg << ENDL;
 }
-#endif
+
+void Debug::ConsoleLog(float _msg)
+{
+	COUT << _msg << ENDL;
+}
+
+void Debug::ConsoleLog(int _msg)
+{
+	COUT << _msg << ENDL;
+}
+
+void Debug::ConsoleLog(double _msg)
+{
+	COUT << _msg << ENDL;
+}
+
+void Debug::ConsoleLog(const char* _msg)
+{
+	COUT << _msg << ENDL;
+}
+
+
+////////////////////////////////////////////////////////////////////////
+
+void Debug::ConsoleError(const STRING& _msg)
+{
+	// Console application
+	CERR << "ERROR: " << _msg << ENDL;
+}
+
+void Debug::ConsoleError(float _msg)
+{
+	CERR << "ERROR: " << _msg << ENDL;
+}
+
+void Debug::ConsoleError(int _msg)
+{
+	CERR << "ERROR: " << _msg << ENDL;
+}
+
+void Debug::ConsoleError(double _msg)
+{
+	CERR << "ERROR: " << _msg << ENDL;
+}
+
+void Debug::ConsoleError(const char* _msg)
+{
+	CERR << "ERROR: " << _msg << ENDL;
+}

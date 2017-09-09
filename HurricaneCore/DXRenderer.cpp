@@ -1,35 +1,42 @@
 #include "DXRenderer.h"
-#include "DXApp.h"
+#include "HXApp.h"
+
+#pragma region CONSTRUCTOR(S) & DESTRUCTOR
 
 // CONSTUCTOR(S) & DESTRUCTOR
 
 DXRenderer::DXRenderer() 
-	: swapChain(nullptr), d3d11device(nullptr), deviceContext(nullptr), renderTargetView(nullptr)
+	: _swapChain(nullptr), _d3d11device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr)
+	//_depthStencilBuffer(nullptr), _depthStencilState(nullptr), _depthStencilView(nullptr), _rasterState(nullptr)
 {
 	// empty
 }
 
 DXRenderer::~DXRenderer() 
 {
-	if (DX11GAME->IsFullscreen())
-		swapChain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
-	
-	// close and release all COM objects
-	swapChain->Release();
-	d3d11device->Release();
-	deviceContext->Release();
-	renderTargetView->Release();
+	CleanUpD3DSystems();
 }
+
+#pragma endregion
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#pragma region INITIALIZERS & CLEAN FUNCTIONS
+
 // Create the DirectX 11 Swap chain, device context, etc.
 
-bool DXRenderer::CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, bool isFullscreen)
+bool DXRenderer::InitRenderer(HWND hwnd, int width, int height, bool isFullScreen)
+{
+	AbstractRenderer::InitRenderer(hwnd, width, height, isFullScreen);
+	return CreateDeviceAndRenderTarget(hwnd, width, height, isFullScreen);
+}
+
+bool DXRenderer::CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, bool isFullscreen, bool vsync)
 {
 	DXRenderer::width = width;
 	DXRenderer::height = height;
 
+	_vsync_enabled = vsync;
 
 	//Describe our Buffer
 	DXGI_MODE_DESC bufferDesc;
@@ -66,44 +73,58 @@ bool DXRenderer::CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, b
 
 	swapChainDesc.Flags					= DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; //changes resolution when swapping windowed - fullscreen
 
-
+	// Create SWAP CHAIN and d3d11 device
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
 		NULL, 
 		D3D_DRIVER_TYPE_HARDWARE, // use D3D_DRIVER_TYPE_REFERENCE if you don't have a DX11 compliant graphics card
 		NULL, NULL, NULL, NULL,
 		D3D11_SDK_VERSION, 
 		&swapChainDesc, 
-		&swapChain, 
-		&d3d11device, 
+		&_swapChain, 
+		&_d3d11device, 
 		NULL, 
-		&deviceContext
+		&_deviceContext
 	);
 
 	if (hr != S_OK) {
 		MessageBox(0, "Direct3D Initialization - Failed ", "Error", MB_OK);
+		CleanUpD3DSystems();
 		return false;
 	}
 
+	// Create BACK BUFFER
 	ID3D11Texture2D* pBackBuffer;
 
 	// GetBuffer() == finds back buffer on swap chain and use it to create the pBackBuffer texture object 
-	hr = swapChain->GetBuffer(
+	hr = _swapChain->GetBuffer(
 		0,							// number of the back buffer to get; 0 == we are only using one back buffer
 		__uuidof(ID3D11Texture2D),  // each COM object has a unique ID
 									// we use this uuid to identify the ID3D11Texture2D COM object
 		(void**)&pBackBuffer
 	);
 
+	if (hr != S_OK) {
+		MessageBox(0, "Direct3D Initialization - Failed ", "Error", MB_OK);
+		CleanUpD3DSystems();
+		return false;
+	}
 
 
-	hr = d3d11device->CreateRenderTargetView(pBackBuffer, NULL, &renderTargetView);
+	// Create RENDER TARGET
+	hr = _d3d11device->CreateRenderTargetView(pBackBuffer, NULL, &_renderTargetView);
+
+	if (hr != S_OK) {
+		MessageBox(0, "Direct3D Initialization - Failed ", "Error", MB_OK);
+		CleanUpD3DSystems();
+		return false;
+	}
 	pBackBuffer->Release(); //Relase it when we dont need it anymore
 
 
 	// this actually sets the render target
-	deviceContext->OMSetRenderTargets(
+	_deviceContext->OMSetRenderTargets(
 		1,					// number of render targets			
-		&renderTargetView,  // pointer to list of render target if there are more than one
+		&_renderTargetView,  // pointer to list of render target if there are more than one
 		NULL
 	);
 
@@ -111,19 +132,47 @@ bool DXRenderer::CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, b
 }
 
 
-void DXRenderer::CreateViewPort() 
+void DXRenderer::CleanUpD3DSystems()
 {
-	//D3D11_VIEWPORT viewport;
-	//ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+	if (HXGAME->IsFullscreen() && _swapChain)
+		_swapChain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
 
-	//viewport.TopLeftX = 0;
-	//viewport.TopLeftY = 0;
-	//viewport.Width = DXRenderer::width;
-	//viewport.Height = DXRenderer::height;
+	// close and release all COM objects
+	CleanUpRenderTarget();
+
+	if (_swapChain)
+		_swapChain->Release();
+	if (_d3d11device)
+		_d3d11device->Release();
+	if (_deviceContext)
+		_deviceContext->Release();
 }
 
+void DXRenderer::CleanUpRenderTarget() {
+	if (_renderTargetView) 
+		_renderTargetView->Release();
+	_renderTargetView = NULL;
+}
+
+void DXRenderer::GetVideoCardInfo(char* cardName, int& memory)
+{
+	strcpy_s(cardName, 128, _videoCardDescription);
+	memory = _videoCardMemory;
+	return;
+}
+
+#pragma endregion
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma region SCREEN FUNCTIONS
+
+// Clear the screen w/ a specifed colour via the render target
+void DXRenderer::ClearScreen(float r, float g, float b) {
+	const float bgColor[] = { r, g, b, 1.0f }; // fully opaque color background
+	_deviceContext->ClearRenderTargetView(_renderTargetView, bgColor);
+}
+
 
 // Set the viewport and renderTargetView
 void DXRenderer::BeginFrame() 
@@ -137,10 +186,9 @@ void DXRenderer::BeginFrame()
 	viewport.Width		= (FLOAT)DXRenderer::width;
 	viewport.Height		= (FLOAT)DXRenderer::height;
 
-	deviceContext->RSSetViewports(1, &viewport);
+	_deviceContext->RSSetViewports(1, &viewport);
 
-	const float bgColor[] = { 0.0f, 0.0f, 0.3f, 1.0f };
-	deviceContext->ClearRenderTargetView(renderTargetView, bgColor);
+	ClearScreen(1.0f, 0.0f, 0.0f);
 }
 
 ///////
@@ -150,18 +198,17 @@ void DXRenderer::BeginFrame()
 // Backbuffering
 void DXRenderer::EndFrame() 
 {
-	// switch the back buffer and the front buffer
-	swapChain->Present(0, 0);
+	// Present the back buffer to the screen since rendering is complete.
+	if (_vsync_enabled)
+	{
+		// Lock to screen refresh rate.
+		_swapChain->Present(1, 0);
+	}
+	else
+	{
+		// Present as fast as possible.
+		_swapChain->Present(0, 0);
+	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-ID3D11Device* DXRenderer::GetDevice()
-{
-	return d3d11device;
-}
-
-ID3D11DeviceContext* DXRenderer::GetDeviceContext()
-{
-	return deviceContext;
-}
+#pragma endregion

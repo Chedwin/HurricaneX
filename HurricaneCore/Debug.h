@@ -5,8 +5,10 @@
 //					Opens a debug file for writing.
 //
 // Author:			Edwin Chen
+// Special Thanks:	Scott Fielder
+//
 // Created:			Jan 31, 2016
-// Last updated:	Mar 12, 2017
+// Last updated:	May 20, 2017
 //
 //*******************************//
 
@@ -37,12 +39,23 @@ private:
 public:
 	static void Init();
 
+	// File I/O
 	static void Log(const EMessageType MsgType, const STRING& comments);
 	static void Log(const EMessageType MsgType, const STRING& Class, const STRING& Method, const STRING& timestamp, const STRING& file, const int& line, const STRING& comments);
 
-#ifdef	HURRICANE_OPENGL
+	// Standard console logging 
 	static void ConsoleLog(const STRING& _msg);
-#endif
+	static void ConsoleLog(float _msg);
+	static void ConsoleLog(int _msg);
+	static void ConsoleLog(double _msg);
+	static void ConsoleLog(const char* _msg);
+	
+	// Error console logging
+	static void ConsoleError(const STRING& _msg);
+	static void ConsoleError(float _msg);
+	static void ConsoleError(int _msg);
+	static void ConsoleError(double _msg);
+	static void ConsoleError(const char* _msg);
 };
 
 

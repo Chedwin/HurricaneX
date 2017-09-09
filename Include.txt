@@ -1,0 +1,15 @@
+// Hurricane engine headers
+$(SolutionDir)\HurricaneCore
+
+// OpenGL
+$(SolutionDir)dependencies\OpenGL\include 
+
+// glm
+$(SolutionDir)\dependencies\glm
+
+// Assimp
+$(SolutionDir)\dependencies\assimp\include
+
+
+// DirectX SDK 
+$(DXSDK_DIR)Include

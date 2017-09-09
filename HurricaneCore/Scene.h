@@ -9,7 +9,7 @@
 //					
 //
 // Created:			Mar 22, 2016
-// Last updated:	Mar 25, 2017
+// Last updated:	Sep 07, 2017
 //
 //*******************************//
 
@@ -19,7 +19,7 @@
 #include "Macro.h"
 #include "HMath.h"
 #include "GameObject.h"
-//#include "Camera.h"
+#include "Camera.h"
 
 // forward declare the Game Scene Manager
 class Game;
@@ -37,7 +37,7 @@ public:
 	virtual void Update(const float _timeStep);
 	virtual void Render();
 
-	//void SetCamera(Camera* _c);
+	void SetCamera(Camera* _c);
 
 
 	void AddSceneNode(GameObject& g);
@@ -65,8 +65,8 @@ protected:
 	UNIQUE_PTR(GameObject) _rootNode;
 	friend DEFAULT_DELETE(GameObject);
 public:
-	//Camera* mainCamera;
-	//Camera* currentCamera;
+	Camera* mainCamera;
+	Camera* currentCamera;
 };
 
 

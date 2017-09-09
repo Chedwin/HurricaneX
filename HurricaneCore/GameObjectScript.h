@@ -17,25 +17,26 @@
 // Special Thanks:	Unity
 //
 // Created:			Nov 21, 2016
-// Last updated:	Mar 25, 2017
+// Last updated:	Sep 09, 2017
 //
 //*******************************//
 
 
-#ifndef GAME_OBJECT_SCRIPT_H
-#define GAME_OBJECT_SCRIPT_H
+#ifndef _GAME_OBJECT_SCRIPT_H
+#define _GAME_OBJECT_SCRIPT_H
 
 #include "Macro.h"
 
 class GameObject;
 
-// SINGLE game object script
+#pragma region class GameObjectScript -> SINGLE game object script
+
 class GameObjectScript {
 public:
 	explicit GameObjectScript(const STRING& n);
 	virtual ~GameObjectScript() = 0;
 
-	virtual bool UpdateScript(GameObject& gameObject, const float _timeStep);
+	virtual bool UpdateScript(GameObject* gameObject, const float _timeStep) = 0;
 
 	inline STRING GetName() {
 		return _scriptName;
@@ -47,27 +48,54 @@ public:
 protected:
 	STRING _scriptName;
 public:
-	typedef FUNCTION(bool(GameObject&, float)) ScriptLambda;
+	typedef FUNCTION(bool(GameObject*, float)) ScriptLambda;
 	ScriptLambda		userUpdateFunction = nullptr;
 
 };
 
+#pragma endregion 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// MULTIPLE scripts to be put on a single game object
+#pragma region class GameObjectMultiScript -> MULTIPLE scripts to be put on a single game object
+
 class GameObjectMultiScript {
 public:
 	GameObjectMultiScript();
 	~GameObjectMultiScript();
 
-	void AddScript(const STRING& n, GameObjectScript* script);
+	// GET
+	template<typename T> T* GetScript() 
+	{
+		MAP(STRING, GameObjectScript*)::iterator iter = scriptMap.begin();
+
+		for (iter = scriptMap.begin(); iter != scriptMap.end(); iter++)
+		{
+			// We need to dynamically cast the base class to a derived class
+			// NOTES: 
+			//		- dynamic_cast<T> performs a runtime check to make sure the cast is valid
+			//		- a dynamic cast only works with polymorphic class with at least ONE virtual method
+			STRING t1 = typeid(dynamic_cast<T*>(iter->second)).name();
+			STRING t2 = typeid(T*).name();
+
+			// Determine if the TYPE names are the same
+			if (t1 == t2)
+			{
+				return dynamic_cast<T*>(iter->second);
+			}
+		}
+		return nullptr;
+	}
+
+	void AddScript(GameObjectScript* script);
 	void DeleteScript(const STRING& n);
 	void ClearAllScripts();
 
-	bool UpdateAllScripts(GameObject& gameObject, const float _timeStep);
+	bool UpdateAllScripts(GameObject* gameObject, const float _timeStep);
 public:
 	MAP(STRING, GameObjectScript*) scriptMap;
 };
+
+#pragma endregion
 
 #endif

@@ -8,68 +8,111 @@
 // Special Thanks:  Daniel Argento
 //
 // Created:			Mar 11, 2017
-// Last updated:	Apr 28, 2017
+// Last updated:	Sep 07, 2017
 //
 //*******************************//
 
 
-#ifndef _DX_RENDERER_H
-#define _DX_RENDERER_H
+#ifndef _DIRECTX_RENDERER_H
+#define _DIRECTX_RENDERER_H
 
 #include "Macro.h"
 #include "AbstractRenderer.h"
 
-// DIRECTX 
-#include <DXGI.h>
-#include <d3d11.h>
-#include <d3d11sdklayers.h>
-#include <d3dcompiler.h>
-#include <d3d10.h>
-
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3d10.lib")
-#pragma comment(lib, "d3dcompiler.lib")
+// DIRECTX UTILITIES
+#include "d3dUtil.h"
+#include "HMath.h"
 
 
-class DXRenderer 
-	: public AbstractRenderer 
+__declspec(align(16)) // guarantees 16-btye alignment
+class DXRenderer : public AbstractRenderer
 {
-	friend class Game;
-	friend class DXApp;
+	friend class HXApp;
+	friend class Graphics;
 protected:
 	DXRenderer();
-	bool CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, bool isFullscreen);
+	bool CreateDeviceAndRenderTarget(HWND hwnd, int width, int height, bool isFullscreen, bool vsync = false);
 
 public:
-	~DXRenderer();
+	virtual ~DXRenderer();
 
-	void CreateViewPort();
+	// This override will call CreateDeviceAndRenderTarget()
+	bool InitRenderer(HWND hwnd, int width, int height, bool isFullScreen) override;
 
-	void BeginFrame();
-	void EndFrame();
+#pragma region _new_ & _delete_ OPERATOR OVERLOAD
+	void* operator new(size_t i) {
+		return _mm_malloc(i, 16);	
+	}
 
-	ID3D11Device* GetDevice();
-	ID3D11DeviceContext* GetDeviceContext();
+	void operator delete(void* p) {
+		_mm_free(p);
+	}
+#pragma endregion
+
+public:
+	void CleanUpD3DSystems();
+	void CleanUpRenderTarget();
+
+	void BeginFrame() override;
+	void EndFrame() override;
+
+	void ClearScreen(float r, float g, float b) override;
+
+	void GetVideoCardInfo(char* cardName, int& memory);
+
+#pragma region INLINE FUNCTIONS
+	// d3d devices accessors
+	inline ID3D11Device* GetDevice() const {
+		return _d3d11device;
+	}
+	inline ID3D11DeviceContext* GetDeviceContext() const {
+		return _deviceContext;
+	}
+
+	// matrix accessors
+	inline MAT4 GetProjectionMatrix() const {
+		return projectionMatrix;
+	}
+	inline MAT4 GetWorldMatrix() const {
+		return worldMatrix;
+	}
+	inline MAT4 GetOrthoMatrix() const {
+		return orthoMatrix;
+	}
+
+#pragma endregion
 
 
 protected:
 	// Device = virtual representation of your video adapter
-	ID3D11Device* d3d11device = nullptr;
+	ID3D11Device*				_d3d11device;
 
 	// Device Context = manager for the GPU and renderering pipeline
-	ID3D11DeviceContext* deviceContext = nullptr;
+	ID3D11DeviceContext*		_deviceContext;
 	
 	// Swap Chain = series of buffers which take turns being rendered
 	// NOTE: this doesn't belong to Direct3D but to DXGI the DirectX hardware interface
-	IDXGISwapChain* swapChain = nullptr;
+	IDXGISwapChain*				_swapChain;
 
 	// Render target = COM object that maintains a location in video memory for you to render to
-	ID3D11RenderTargetView* renderTargetView = nullptr;
+	ID3D11RenderTargetView*		_renderTargetView;
 
-	//D3D11_TEXTURE2D_DESC m_backBufferDesc;
+	//ID3D11Texture2D*			_depthStencilBuffer;
+	//ID3D11DepthStencilState*	_depthStencilState;
+	//ID3D11DepthStencilView*		_depthStencilView;
+	//ID3D11RasterizerState*		_rasterState;
 
+protected:
+	bool  _vsync_enabled;
+	int   _videoCardMemory;
+	char  _videoCardDescription[128];
 public:
 	int width, height;
+
+public:
+	 MAT4 projectionMatrix;
+	 MAT4 worldMatrix;
+	 MAT4 orthoMatrix;
 };
 
 

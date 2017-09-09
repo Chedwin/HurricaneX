@@ -1,49 +1,58 @@
 //*******************************//
 //
 // Name:			ResourceManager.h
-// Description:		
+// Description:		Templated class that maps a one-to-one relationship 
+//					b/n the name of a resource to an index of a vector.
 //
 // Author:			Edwin Chen
 // Created:			Oct 01, 2016
-// Last updated:	Mar 23, 2017
+// Last updated:	Sep 08, 2017
 //
 //*******************************//
 
 
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+#ifndef _RESOURCE_MANAGER_H
+#define _RESOURCE_MANAGER_H
 
 #include "Macro.h"
 #include "Debug.h"
 
+
+#pragma region class RESOURCE HANDLE
+// This is merely an index number that can be check if NULL (x == -1) or not (x > -1)
 template <class Type>
-class ResourceHandle
-{
+class ResourceHandle {
 public:
-	hINT index;
+	int index; // leave this index PUBLIC
 
+public:
 	ResourceHandle() : index(-1) {}
-	ResourceHandle(hINT ind) : index(ind) {}
+	ResourceHandle(int ind) : index(ind) {}
 
-	inline hBOOL IsNull()
-	{
+	inline bool IsNull() {
 		return index == -1;
 	}
 
-	inline void Nullify()
-	{
+	inline void Nullify() {
 		index = -1;
 	}
 
-	inline hINT GetIndex() const
-	{
+	inline int GetIndex() const {
 		return index;
 	}
 };
 
+#pragma endregion
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+#pragma region class RESOURCE MANAGER 
 
+// Description
+// Contains 2 data structures: a vector and a map
+// Vector contains the actual pointer to the resource
+// Map holds a names that specifies a resource handle (see RESOURCE HANDLE above) that corresponds to the indices of the vector mentioned above
+// If name cannot be found in map, RM returns -1 (NULL)
 
 template <class Type>
 class ResourceManager {
@@ -63,7 +72,7 @@ public:
 		resourceMap = nullptr;
 	}
 
-	hINT GetSize() const
+	int GetSize() const
 	{
 		return resourceMap->size();
 	}
@@ -78,7 +87,7 @@ public:
 			for (iter = resourceMap->begin(); iter != resourceMap->end(); iter++)
 			{
 				ResourceHandle<Type> rm = iter->second;
-				hINT t = rm.GetIndex();
+				int t = rm.GetIndex();
 
 				delete resourceVector[t];
 				resourceVector[t] = NULL;
@@ -105,15 +114,16 @@ public:
 			}
 		}
 
-		hINT rListSize = resourceVector.size(); // should start at 0
+		int rListSize = resourceVector.size(); // should start at 0
 		resourceVector.push_back(res);
 		ResourceHandle<Type> handle(rListSize);
-		resourceMap->insert(iter, PAIR(STRING, hINT)(name, handle.index));
+		resourceMap->insert(iter, PAIR(STRING, int)(name, handle.index));
 
 		return handle.index;
 	}
 
-	// REMOVE A RESOURCE BY NAME
+	// REMOVE (overload 1)
+	// by name
 	void Remove(const STRING& name)
 	{
 		MAP(STRING, ResourceHandle<Type>)::iterator iter = resourceMap->begin();
@@ -123,25 +133,25 @@ public:
 			if (iter->first == name)
 			{
 				ResourceHandle<Type> rm = iter->second;
-				hINT t = rm.GetIndex();
+				int t = rm.GetIndex();
 
 				delete resourceVector[t];
 				resourceVector[t] = NULL;
 				resourceMap->erase(name);
 				return;
 			}
-		}
-		
+		}		
 	}
+
 
 	// GET (overload 1)
 	// Return generic type pointer
 	Type* Get(ResourceHandle<Type> &handle) const
 	{
-		hINT idx = handle.GetIndex();
+		int idx = handle.GetIndex();
 		Type *result = NULL;
 
-		if (idx >= 0 && idx < hINT(resourceVector.size()))
+		if (idx >= 0 && idx < int(resourceVector.size()))
 		{
 			result = resourceVector[idx];
 		}
@@ -167,6 +177,8 @@ public:
 		}
 		return result;
 	}
-};
 
-#endif
+}; // end template class ResourceManager
+#pragma endregion
+
+#endif _RESOURCE_MANAGER_H
