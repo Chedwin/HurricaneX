@@ -10,7 +10,7 @@
 // Special Thanks:  Mathieu Violette, James Sholdice, Nathan Senter, Unity, Aiden Dearing, House Yokeswaran, Mark Seaman
 //
 // Created:			Sep 30, 2016
-// Last updated:	Sep 09, 2017
+// Last updated:	Nov 03, 2017
 //
 //*******************************//
 
@@ -20,132 +20,153 @@
 
 
 #include "Macro.h"
+#include "Debugger.h"
 #include "Transform.h"
-#include "Component.h"
+#include "IComponent.h"
 #include "GameObjectScript.h"
 
+#include "MeshComponent.h"
+
+
+
 // forward declare 
-class Scene;
 
-#define DEFAULT_GAMEOBJECT_NAME "GameObject"
+namespace HurricaneEngine 
+{
 
-class GameObject {
-protected:
-	STRING	_name;
-	bool	_isEnabled = false;
+	#define DEFAULT_GAMEOBJECT_NAME "GameObject"
 
-	// Scripting behaviour
-	// Allows for multiple scripts to be attached to this game object
-	GameObjectMultiScript* scripts;
-public:
-	VECTOR(STRING)			tags;
-	VECTOR(GameObject*)		childObjects;
-	VECTOR(Component*)		componentList;
+	class GameObject {
+	protected:
+		STRING	_name;
+		bool	_isEnabled = false;
 
-	// Pointer to itself (Unity-like)
-	GameObject* gameObject;
-
-	// Transform fields
-	Transform transform;
+		// Scripting behaviour
+		// Allows for multiple scripts to be attached to this game object
+		GameObjectMultiScript* _scripts;
 
 
-	// Which scene am I in?
-	Scene* scene;
+		VECTOR(STRING)			_tags;
+		VECTOR(GameObject*)		_childObjects;
+		VECTOR(IComponent*)		_componentList;
 
-public:
-	//explicit GameObject(Scene& sc, const STRING& name = ""); // not in use here
+	public:
+		// Pointer to itself (Unity-like)
+		GameObject* gameObject;
 
-	// CONSTRUCTORS & DESTRUCTORS
-	explicit GameObject(const STRING& name = "");
-	virtual ~GameObject();
+		// Transform fields
+		Transform transform;
 
-	GameObject() = delete; // no default constructor
-	GameObject(const GameObject&);
-
-	void InitGameObject(const STRING& name = "");
+		// Which scene am I in?
 
 
-	// VIRTUAL GAME SUBROUTINES
-	// "CAN" BE OVERRIDEN BY DERIVED CLASSES
-	virtual void Update(const float _deltaTime);
-	virtual void PreRender(const float _deltaTime);
-	virtual void Render(const float _deltaTime);
+	public:
+		//explicit GameObject(Scene& sc, const STRING& name = ""); // not in use here
+
+		// CONSTRUCTORS & DESTRUCTORS
+		explicit GameObject(const STRING& _name = DEFAULT_GAMEOBJECT_NAME);
+		virtual ~GameObject();
+
+		GameObject() = delete; // no default constructor
+		GameObject(const GameObject&);
 
 
 
-	// CHILD OBEJCTS
-	void AddChild(GameObject& g);
-	void RemoveChild(GameObject& g);
-	void RemoveChild(const STRING& n);
-	void ClearAllChildren();
-	GameObject* GetChild(const STRING& name);
+		// VIRTUAL GAME SUBROUTINES
+		// "CAN" BE OVERRIDEN BY DERIVED CLASSES
+		virtual bool Init();
+		virtual void Destroy();
+
+		virtual void Update(const float _deltaTime);
+		virtual void PreRender();
+		virtual void Render();
 
 
-	// Tags
-	void AddTag(const STRING& _tag);
-	bool HasTag(const STRING& _tag);
-	void RemoveTag(const STRING& _tag);
+
+		// CHILD OBEJCTS
+		void AddChild(GameObject& g);
+		void RemoveChild(GameObject& g);
+		void RemoveChild(const STRING& n);
+		void ClearAllChildren();
+		GameObject* GetChild(const STRING& name);
 
 
-	// COMPONENTS
-	void AddComponent(Component* c);
-	bool HasComponent(Component* c);
-	void DestroyComponents();
+		// Tags
+		void AddTag(const STRING& _tag);
+		bool HasTag(const STRING& _tag);
+		void RemoveTag(const STRING& _tag);
 
-	// SCRIPTS
-	void DestroyScripts();
-	void AddScript(GameObjectScript* _script);
 
-#pragma region TEMPLATED SUBROUTINES
+		// COMPONENTS
+		void AddComponent(IComponent* c);
+		void RemoveComponents();
 
-	// GETCOMPONENT template function
-	// i.e. similiar to Unity;
-	template<typename TYPE> TYPE* GetComponent() 
-	{
-		for (int i = 0; i < componentList.size(); i++)
+		// SCRIPTS
+		void AddScript(GameObjectScript* _script);
+		void RemoveScripts();
+
+	#pragma region TEMPLATE SUBROUTINES
+
+		// GET COMPONENT() template function
+		// i.e. similiar to Unity;
+		template<typename TYPE> TYPE* GetComponent()
 		{
-			// We need to dynamically cast the base class to a derived class
-			// NOTES: 
-			//		- dynamic_cast<T> performs a runtime check to make sure the cast is valid
-			//		- a dynamic cast only works with polymorphic class with at least ONE virtual method
-			STRING t1 = typeid(dynamic_cast<TYPE*>(componentList[i])).name();
-			STRING t2 = typeid(TYPE*).name();
+			STRING t1 = typeid(TYPE*).name(); // name of the type provided by the USER
 
-			// Determine if the TYPE names are the same
-			if (t1 == t2)
+			for (int i = 0; i < _componentList.size(); i++)
 			{
-				return dynamic_cast<TYPE*>(componentList[i]);
+				// We need to dynamically cast the base class to a derived class
+				// NOTES: 
+				//		- dynamic_cast<T> performs a runtime check to make sure the cast is valid
+				//		- a dynamic cast only works with polymorphic class with at least ONE virtual method
+				STRING t2 = typeid(dynamic_cast<TYPE*>(_componentList[i])).name(); // name of the type in the component list
+
+				// Determine if the TYPE names are the same
+				if (t1 == t2)
+					return dynamic_cast<TYPE*>(_componentList[i]);
+
 			}
+			Debugger::Error(gameObject->GetName() + " failed to GetComponent() for: " + t1);
+			return nullptr;
 		}
-		return nullptr;
-	}
-	
-	// GET script by template
-	template<typename T> T* GetScript() 
-	{
-		return scripts->GetScript<T>();
-	}
 
-#pragma endregion 
+		// GET SCRIPT() by template
+		template<typename T> T* GetScript()
+		{
+			//static_assert(dynamic_cast<IComponent>, "Needs to derive from IComponent");
+			static_assert((IComponent const*)&T, "Needs to derive from IComponent");
+
+			T* temp = _scripts->GetScript<T>();
+			STRING t1 = typeid(T*).name();
+
+			if (!temp)
+				Debugger::Error("GameObject: \"" + gameObject->GetName() + "\" failed to GetScript() for: " + t1);
+
+			return temp;
+		}
+
+	#pragma endregion 
 
 
-#pragma region INLINE 
-	// helper functions
-	inline bool CheckEnabled() const {
-		return _isEnabled;
-	}
-	inline void SetEnabled(bool _b) {
-		_isEnabled = _b;
-	}
+	#pragma region INLINE 
+		// helper functions
+		inline bool CheckEnabled() const {
+			return _isEnabled;
+		}
+		inline void SetEnabled(bool _b) {
+			_isEnabled = _b;
+		}
 
-	inline STRING GetName() const {
-		return _name;
-	}
-	inline void SetName(const STRING& n) {
-		_name = n;
-	}
-#pragma endregion
+		inline STRING GetName() const {
+			return _name;
+		}
+		inline void SetName(const STRING& n) {
+			_name = n;
+		}
+	#pragma endregion
 
-}; // end class GameObject
+	}; // end class GameObject
+
+} // end namespace HurricaneEngine
 
 #endif

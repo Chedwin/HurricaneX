@@ -1,51 +1,40 @@
 #include "FPSCounter.h"
+#include <Windows.h>
 
-UNIQUE_PTR(FPSCounter) FPSCounter::_fpsInstance(nullptr); // Declare static unique pointer
+using namespace HurricaneEngine;
 
+UNIQUE_PTR(FPSCounter) FPSCounter::_instance(nullptr);
 
 FPSCounter* FPSCounter::GetFPSCounter()
 {
-	if (_fpsInstance.get() == nullptr) 
-		_fpsInstance.reset(new FPSCounter());
-	
-	return _fpsInstance.get();
+	if (_instance.get() == nullptr)
+		_instance.reset(new FPSCounter());
+
+	return _instance.get();
 }
 
-
-FPSCounter::FPSCounter() : _fps(0.0f), _frameCount(0), _maxFPS(1000.0f)
+void FPSCounter::Initialize()
 {
-	// empty
+	m_fps = 0;
+	m_count = 0;
+	m_startTime = GetTickCount();// timeGetTime();
 }
 
-FPSCounter::~FPSCounter()
+void FPSCounter::Frame()
 {
+	m_count++;
 
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void FPSCounter::SetMaxFPS(float maxfps)
-{
-	_maxFPS = maxfps;
-}
-
-
-void FPSCounter::UpdateFPS() 
-{
-	_frameCount++;
-
-	if (_interval.value() > 1000 /* milliseconds*/) 
+	if (GetTickCount() >= (m_startTime + 1000))
 	{
-		// save the current counter value to m_fps
-		_fps = _frameCount;
+		m_fps = m_count;
+		m_count = 0;
 
-		// reset the counter and the interval
-		_frameCount = 0;
-		_interval.Reset();
+		m_startTime = GetTickCount();
 	}
-
-	if (1000.0f / _maxFPS > _frameCount) 
-	{
-		Sleep(1000.0f / _maxFPS - _frameCount);	 // equivalent to SDL_Delay	
-	}		
 }
+
+int FPSCounter::GetFps()
+{
+	return m_fps;
+}
+
