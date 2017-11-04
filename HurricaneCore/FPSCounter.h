@@ -6,7 +6,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Nov 11, 2016
-// Last updated:	May 08, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
@@ -16,67 +16,36 @@
 
 #include "Macro.h"
 
-class Interval {
-	friend class FPSCounter;
-protected:
-	// Ctor
-	inline Interval() : _initialTick(GetTickCount())
-	{
-	}
+#define MAX_FRAME_RATE 120.0f
 
-	// Dtor
-	virtual ~Interval()
-	{
-	}
+namespace HurricaneEngine 
+{
+	//class IHGame;
 
-	inline unsigned int value() const
-	{
-		return GetTickCount() - _initialTick;
-	}
+	class FPSCounter {
+		//friend class IHGame;
+	protected:
+		static UNIQUE_PTR(FPSCounter) _instance;
+		friend DEFAULT_DELETE(FPSCounter);
 
-	inline void Reset() 
-	{
-		_initialTick = GetTickCount();
-	}
+		const float _maxFPS = MAX_FRAME_RATE;
+		
+		int m_fps, m_count;
+		unsigned long m_startTime;
 
-private:
-	unsigned int _initialTick;
-};
+	protected:
+		FPSCounter() {}
+	public:
+		~FPSCounter() {}
 
+		static FPSCounter* GetFPSCounter();
 
-///////////////////////////////////////////////////////////////////////////////////
+		void Initialize();
+		void Frame();
+		int  GetFps();
+	};
 
-#define FPS_COUNTER FPSCounter::GetFPSCounter()	
-
-class FPSCounter {
-	friend class Game;
-	friend class DXApp;
-protected:
-	FPSCounter();
-public:
-	~FPSCounter();
-	static FPSCounter* GetFPSCounter();
-
-	void SetMaxFPS(float maxfps);
-
-	void UpdateFPS();
-
-	inline float GetFPS() const {
-		return _fps;
-	}
-
-protected:
-	static UNIQUE_PTR(FPSCounter) _fpsInstance;
-	friend DEFAULT_DELETE(FPSCounter);
-
-	float _maxFPS = 1000.0f;
-	int   _startTicks;
-
-	float _fps;
-	float _frameCount;
-
-	Interval _interval;
-};
+} // end namespace HurricaneEngine
 
 
 #endif

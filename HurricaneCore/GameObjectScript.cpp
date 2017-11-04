@@ -1,5 +1,7 @@
 #include "GameObjectScript.h"
 
+using namespace HurricaneEngine;
+
 #pragma region GAME OBJECT SCRIPT
 
 GameObjectScript::GameObjectScript(const STRING& n)
@@ -14,11 +16,13 @@ GameObjectScript::~GameObjectScript()
 
 ///////////////////////////
 
+// UPDATE one script
+// TODO: be overridden by a derived class
 bool GameObjectScript::UpdateScript(GameObject* gameObject, const float _timeStep)
 {
-	if (userUpdateFunction) {
+	if (userUpdateFunction)
 		return userUpdateFunction(gameObject, _timeStep);
-	}
+
 	return true;
 }
 
@@ -27,9 +31,10 @@ bool GameObjectScript::UpdateScript(GameObject* gameObject, const float _timeSte
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-#pragma region MULTI-SCRIPTs
+#pragma region MULTI-SCRIPTS
 
-GameObjectMultiScript::GameObjectMultiScript()
+GameObjectMultiScript::GameObjectMultiScript(GameObject& _gm)
+	: gmOb(&_gm)
 {
 	// EMPTY
 }
@@ -37,42 +42,42 @@ GameObjectMultiScript::GameObjectMultiScript()
 GameObjectMultiScript::~GameObjectMultiScript()
 {
 	ClearAllScripts();
+	gmOb = nullptr;
 }
 
 //////////////////////////////
 
-// ADD script (if not already in game object)
+// ADD script() (if not already in game object)
 void GameObjectMultiScript::AddScript(GameObjectScript* script)
 {
 	STRING n = script->GetName();
 	auto f = scriptMap.find(n);
 
 	script->SetName(n);
-	if (f != scriptMap.end()) {
+	if (f != scriptMap.end())
 		return;
-	}
 
 	scriptMap.insert(PAIR(STRING, GameObjectScript*)(n, script));
 }
 
 
-// DELETE one script
+// DELETE one script()
 void GameObjectMultiScript::DeleteScript(const STRING& n)
 {
-	if (scriptMap.size() == 0) {
+	if (scriptMap.size() == 0)
 		return;
-	}
 
 	auto f = scriptMap.find(n);
 
-	if (f != scriptMap.end()) {
+	if (f != scriptMap.end())
+	{
 		delete f->second;
 		scriptMap.erase(f->first);
 	}
 }
 
 
-// DESTROY ALL
+// DESTROY ALL scripts()
 void GameObjectMultiScript::ClearAllScripts()
 {
 	if (scriptMap.size() > 0)
@@ -82,13 +87,13 @@ void GameObjectMultiScript::ClearAllScripts()
 		for (iter = scriptMap.begin(); iter != scriptMap.end(); iter++)
 		{
 			GameObjectScript* temp = iter->second;
-			delete temp;
+			SafeDeletePTR(temp);
 		}
 	}
 	scriptMap.clear();
 }
 
-// UPDATE ALL
+// UPDATE ALL scripts()
 bool GameObjectMultiScript::UpdateAllScripts(GameObject* gameObject, const float _timeStep)
 {
 	bool result = true;

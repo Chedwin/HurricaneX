@@ -6,7 +6,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Oct 01, 2016
-// Last updated:	Sep 08, 2017
+// Last updated:	Nov 03, 2017
 //
 //*******************************//
 
@@ -15,7 +15,7 @@
 #define _RESOURCE_MANAGER_H
 
 #include "Macro.h"
-#include "Debug.h"
+#include "Debugger.h"
 
 
 #pragma region class RESOURCE HANDLE
@@ -72,9 +72,14 @@ public:
 		resourceMap = nullptr;
 	}
 
-	int GetSize() const
+	inline int GetSize() const
 	{
 		return resourceMap->size();
+	}
+
+	inline bool IsEmpty() const 
+	{
+		return resourceMap->empty();
 	}
 
 	// CLEAR EVERYTHING
@@ -140,13 +145,13 @@ public:
 				resourceMap->erase(name);
 				return;
 			}
-		}		
+		}
 	}
 
 
 	// GET (overload 1)
 	// Return generic type pointer
-	Type* Get(ResourceHandle<Type> &handle) const
+	Type* GetResource(ResourceHandle<Type> &handle) const
 	{
 		int idx = handle.GetIndex();
 		Type *result = NULL;
@@ -158,9 +163,33 @@ public:
 		return result;
 	}
 
+
 	// GET (overload 2)
+	// Return generic type pointer
+	Type* GetResource(const STRING& _name) const
+	{
+		Type* result = nullptr;
+
+		MAP(STRING, ResourceHandle<Type>)::iterator iter = resourceMap->begin();
+
+		for (iter = resourceMap->begin(); iter != resourceMap->end(); iter++)
+		{
+			if (iter->first == _name)
+			{
+				ResourceHandle<Type> idx = iter->second;
+				result = resourceVector[idx.index];
+				break;
+			}
+
+		}
+		return result;
+	}
+
+
+
+	// GET (overload 3)
 	// Return resource handle (index of handle)
-	ResourceHandle<Type> Get(const STRING &name) const
+	ResourceHandle<Type> GetHandle(const STRING &name) const
 	{
 		MAP(STRING, ResourceHandle<Type>)::iterator iter = resourceMap->begin();
 

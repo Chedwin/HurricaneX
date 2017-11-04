@@ -1,85 +1,47 @@
 #include "ShaderProgram.h"
-#include "Debug.h"
 
-ShaderProgram::ShaderProgram(const STRING& _name)
-	: _vertShd(nullptr), _pixShd(nullptr), _geoShd(nullptr), _compShd(nullptr)
+using namespace HurricaneEngine;
+
+ShaderProgram::ShaderProgram() : _dx(nullptr)
 {
-	SetShaderName(_name);
 }
 
-ShaderProgram::~ShaderProgram()
+ShaderProgram::~ShaderProgram() 
 {
-	CleanUpShader();
+	ReleaseObjects();
+}
+
+void ShaderProgram::ReleaseObjects()
+{
+	RELEASE_COM(_VS);
+	RELEASE_COM(_PS);
 }
 
 
-
-void ShaderProgram::CleanUpShader() 
+bool ShaderProgram::LoadShader(DXRenderer* _dxR, _In_ LPCWSTR filePath)
 {
-	if (_vertShd)
-		_vertShd->Release();
+	_dx = _dxR;
 
-	if (_pixShd)
-		_pixShd->Release();
+	ID3D10Blob* errorMessage = 0;
+	ID3D10Blob* vsBuffer = 0;
+	ID3D10Blob* psBuffer = 0;
 
-	if (_geoShd)
-		_geoShd->Release();
+	HRESULT result = 0;
+	result = D3DCompileFromFile(filePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VSMain", "vs_5_0", D3DCOMPILE_DEBUG, 0, &vsBuffer, &errorMessage);
+	result = D3DCompileFromFile(filePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "PSMain", "ps_5_0", D3DCOMPILE_DEBUG, 0, &psBuffer, &errorMessage);
 
-	if (_compShd)
-		_compShd->Release();
+	if (FAILED(result)) {
+		MessageBox(NULL, "LoadShader() FAILED!", "FATAL ERROR", MB_OK);
+		ReleaseObjects();
+		return false;
+	}
 
-	_vertShd = nullptr;
-	_pixShd  = nullptr;
-	_geoShd  = nullptr;
-	_compShd = nullptr;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool ShaderProgram::InitShaderProgram(HWND hwnd, ID3D11Device & _d, ID3D11DeviceContext & _dc, const STRING& vsFilename, const STRING& psFilename, const STRING& entryPoint)
-{
-	SetDevice(_d);
-	SetDeviceContext(_dc);
-
-	HRESULT vertHR  = 0;
-	HRESULT pixelHR = 0;
-
-	ID3D10Blob* errorMessage			= 0;
-	ID3D10Blob* vertexShaderBuffer		= 0;
-	ID3D10Blob* pixelShaderBuffer		= 0;
+	result = _dx->GetDevice()->CreateVertexShader(vsBuffer->GetBufferPointer(), vsBuffer->GetBufferSize(), NULL, &_VS);
+	result = _dx->GetDevice()->CreatePixelShader(psBuffer->GetBufferPointer(), psBuffer->GetBufferSize(), NULL, &_PS);
 
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
-
-
-	// Vertex Shader
-	vertHR = LoadShader(vsFilename, entryPoint, vertexShaderBuffer, errorMessage);
-
-	if (vertHR != S_OK) {
-		MessageBox(NULL, "Vertex shader loading FAILED", "FATAL ERROR", 0);
-		CleanUpShader();
-		return false;
-	}
-
-	// Pixel shader
-	pixelHR = LoadShader(psFilename, entryPoint, pixelShaderBuffer, errorMessage);
-
-	if (pixelHR != S_OK) {
-		MessageBox(NULL, "Vertex shader loading FAILED", "FATAL ERROR", 0);
-		CleanUpShader();
-		return false;
-	}
-
-
-
-	vertHR = CompileVertexShader(vertexShaderBuffer, _vertShd);
-	if (FAILED(vertHR))
-		return false;
-
-	pixelHR = CompilePixelShader(pixelShaderBuffer, _pixShd);
-	if (FAILED(pixelHR))
-		return false;
 
 	// Create the vertex input layout description.
 	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
@@ -103,19 +65,14 @@ bool ShaderProgram::InitShaderProgram(HWND hwnd, ID3D11Device & _d, ID3D11Device
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
 	// Create the vertex input layout.
-	HRESULT result = _deviceRef->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
-		vertexShaderBuffer->GetBufferSize(), &_layout);
+	result = _dx->GetDevice()->CreateInputLayout(polygonLayout, numElements, vsBuffer->GetBufferPointer(),vsBuffer->GetBufferSize(), &_layout);
 	if (FAILED(result))
-	{
 		return false;
-	}
+
 
 	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
-	vertexShaderBuffer->Release();
-	vertexShaderBuffer = 0;
-
-	pixelShaderBuffer->Release();
-	pixelShaderBuffer = 0;
+	RELEASE_COM(vsBuffer);
+	RELEASE_COM(psBuffer);
 
 	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -126,54 +83,15 @@ bool ShaderProgram::InitShaderProgram(HWND hwnd, ID3D11Device & _d, ID3D11Device
 	matrixBufferDesc.StructureByteStride = 0;
 
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = _deviceRef->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer);
+	result = _dx->GetDevice()->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer);
+
 	if (FAILED(result))
 		return false;
 
 	return true;
 }
 
-
-
-HRESULT ShaderProgram::LoadShader(const STRING& _filePath, const STRING& entryPoint, ID3D10Blob* shaderBuffer, ID3D10Blob* errorBuffer)
+void ShaderProgram::RenderShader(unsigned int _vertCount)
 {
-	LPCWSTR fPath = (LPCWSTR)_filePath.c_str();
-	HRESULT result = D3DCompileFromFile(fPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), "vs_5_0", D3DCOMPILE_DEBUG, 0, &shaderBuffer, &errorBuffer);
-
-	if (FAILED(result))
-	{
-		// If the shader failed to compile it should have writen something to the error message.
-		if (errorBuffer)
-		{
-			//OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
-		}
-		// If there was  nothing in the error message then it simply could not find the shader file itself.
-		else
-		{
-			LPCSTR concat = (LPCSTR)(_filePath + " file path not found").c_str();
-			MessageBox(NULL, concat, "FATAL ERROR", MB_OK);
-		}
-	}
-
-	return result;
+	_dx->GetDeviceContext()->Draw(_vertCount, 0);
 }
-
-
-#pragma region COMPILE SHADER TYPES
-
-// VERTEX
-HRESULT ShaderProgram::CompileVertexShader(ID3D10Blob* shaderBuffer, ID3D11VertexShader* _vert)
-{
-	HRESULT res = _deviceRef->CreateVertexShader(shaderBuffer->GetBufferPointer(), shaderBuffer->GetBufferSize(), NULL, &_vert);
-	return res;
-}
-
-
-// PIXEL
-HRESULT ShaderProgram::CompilePixelShader(ID3D10Blob * shaderBuffer, ID3D11PixelShader * _pixel)
-{
-	HRESULT res = _deviceRef->CreatePixelShader(shaderBuffer->GetBufferPointer(), shaderBuffer->GetBufferSize(), NULL, &_pixel);
-	return res;
-}
-
-#pragma endregion
