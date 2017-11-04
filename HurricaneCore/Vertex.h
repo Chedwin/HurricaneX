@@ -8,7 +8,7 @@
 // Special Thanks:  Daniel Argento, Mark Seaman, Scott Fielder
 //
 // Created:			Apr 20, 2017
-// Last updated:	Apr 28, 2017
+// Last updated:	Nov 02, 2017
 //
 //*******************************//
 
@@ -19,22 +19,26 @@
 #include "Macro.h"
 #include "HMath.h"
 
-
-//Overload Vertex Structure
-struct Vertex 
+namespace HurricaneEngine 
 {
-	Vertex() :
-	pos(0.0f, 0.0f, 0.0f) {}
 
-	Vertex(float x, float y, float z) 
-		: pos(x, y, z) {}
+	//Overload Vertex Structure
+	struct Vertex
+	{
+		Vertex() :
+			pos(0.0f, 0.0f, 0.0f) {}
 
-	Vertex(float x, float y, float z,
-		float cr, float cg, float cb, float ca)
-		: pos(x, y, z), color(cr, cg, cb, ca) {}
+		Vertex(float x, float y, float z)
+			: pos(x, y, z) {}
 
-	DirectX::XMFLOAT3 pos;
-	DirectX::XMFLOAT4 color;
-};
+		Vertex(float x, float y, float z,
+			float cr, float cg, float cb, float ca)
+			: pos(x, y, z), color(cr, cg, cb, ca) {}
+
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT4 color;
+	};
+
+}
 
 #endif

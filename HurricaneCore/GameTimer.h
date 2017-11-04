@@ -1,46 +1,48 @@
 //*******************************//
 //
 // Name:			GameTimer.h
-// Description:		
+// Description:		Static game clock that calculates deltatime
 //					
 //
-// Author:			Frank Luna 
+// Author:			Frank Luna
 // Special Thanks:  
 //
 // Created:			2011
-// Last updated:	May 09, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
-#ifndef _GAME_TIMER_H
-#define _GAME_TIMER_H
+#ifndef _GAMETIMER_H
+#define _GAMETIMER_H
 
-#include "Macro.h"
+namespace HurricaneEngine
+{
 
-class GameTimer {
-public:
-	GameTimer();
-	~GameTimer() {}
+	class GameTimer {
+	public:
+		GameTimer();
 
-	float TotalTime() const;  // in seconds
-	float DeltaTime() const; // in seconds
+		float TotalTime() const;  // in seconds
+		float DeltaTime() const;  // in seconds
 
-	void Reset(); // Call before message loop.
-	void Start(); // Call when unpaused.
-	void Stop();  // Call when paused.
-	void Tick();  // Call every frame.
+		void Reset(); // Call before message loop.
+		void Start(); // Call when unpaused.
+		void Stop();  // Call when paused.
+		void Tick();  // Call every frame.
 
-private:
-	double mSecondsPerCount;
-	double mDeltaTime;
+	private:
+		double _secondsPerCount;
+		double _deltaTime;
 
-	__int64 mBaseTime;
-	__int64 mPausedTime;
-	__int64 mStopTime;
-	__int64 mPrevTime;
-	__int64 mCurrTime;
+		__int64 _baseTime;
+		__int64 _pausedTime;
+		__int64 _stopTime;
+		__int64 _prevTime;
+		__int64 _currTime;
 
-	bool mStopped;
-};
+		bool _stopped;
+	};
 
-#endif
+}
+
+#endif // _GAMETIMER_H

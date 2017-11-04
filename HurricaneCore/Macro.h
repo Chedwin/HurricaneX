@@ -8,39 +8,24 @@
 //
 // Author:			Edwin Chen
 // Created:			Apr 05, 2016
-// Last updated:	Jun 09, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
 #ifndef _MACRO_H
 #define _MACRO_H
-/////////////////////////////////////////////////////////////////////////
-
-/// IMPORTANT NOTE!!!
-#pragma region Define OpenGL? 
-/*
-If HURRICANE_OPENGL is defined below then 
-	all preprocessor statements: 
-		#ifdef HURRICANE_OPENGL 
-	will be TRUE
-*/
-
-//#define HURRICANE_OPENGL 
-
-#pragma endregion
-
-/////////////////////////////////////////////////////////////////////////
 
 ////// WINDOWS STUFF /////
 #define WIN32_LEAN_AND_MEAN // only include Win32 stuff we need (no networking, etc.)
 
+#pragma region INCLUDE SYSTEM HEADERS
+
+// Windows
 #include <Windows.h>
 #include <stdlib.h>
 #include <tchar.h>
 #include <io.h>
 #include <fcntl.h>
-
-
 
 
 /////// Include files ///////
@@ -71,8 +56,15 @@ If HURRICANE_OPENGL is defined below then
 
 #include <functional>
 
+#include <mmsystem.h>
 
-//////// Macros /////////
+#include <chrono>
+
+#pragma endregion
+
+/////////////////////////////////////////////////////////////////////////
+
+#pragma region MACRO DEFINES & METHODS
 
 // iostream
 #define COUT std::cout
@@ -135,9 +127,23 @@ If HURRICANE_OPENGL is defined below then
 #define SHARED_PTR(B)		std::shared_ptr<B>
 #define DEFAULT_DELETE(C)	std::default_delete<C>
 #define WEAK_PTR(D)			std::weak_ptr<D>
+#define MAKE_UNIQUE(E)		std::make_unique<E>
 
+#pragma endregion
 
+/////////////////////////////////////////////////////////////////////////
 
+#pragma region CUSTOM MACRO DEFINE FUNCTIONS
+
+// DELETE ABTs -> faster to delete an object this way
+#define SafeDeletePTR(x) { if(x) delete x; x = nullptr; }
+
+#define SAFE_RELEASE(x) if( x ) { (x)->Release(); (x) = NULL; }
+#define SAFE_DELETE(x) if( x ) { delete(x); (x) = NULL; }
+#define SAFE_DELETE_ARRAY(x) if( x ) { delete [] (x); (x) = NULL; }
+#define SHOWERROR(s,f,l) char buf[1024]; sprintf( buf, "File: %s\nLine: %d\n%s",f,l,s); MessageBox( 0, buf, "Error", 0 );
+
+#pragma endregion
 
 /////////////////////////////////////////////////////////////////////////
 #endif // _MACRO_H
