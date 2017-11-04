@@ -1,33 +1,40 @@
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\hurricanecore.pdb
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\hurricanecore.idb
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\cameracomponent.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\debugger.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\dxrenderer.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\fpscounter.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\gameobject.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\gameobjectscript.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\gametimer.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\ihgame.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\htime.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\inputmanager.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\model.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\scenemanager.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\shaderprogram.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\shaderprogrammanager.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\spritecomponent.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\hurricanecore\debug\window32.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\hurricanecore.pdb
 d:\users\edwin\github\hurricanex\hurricanecore\debug\hurricanecore.idb
-d:\users\edwin\github\hurricanex\hurricanecore\debug\camera.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\component.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\debug.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\dxshaderprogram.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\graphics.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\hxapp.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\cameracomponent.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\debugger.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\dxrenderer.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\fpscounter.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\gameobject.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\gameobjectscript.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\gametimer.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\glrenderer.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\hproperties.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\ihgame.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\htime.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\imgui.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\imgui_impl_dx11.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\inputhandler.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\levelmanager.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\scene.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\tinyxml2.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\d3dapp.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\hlslshaderprogram.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\modelcomponent.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\shaderprogrammanager.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\random.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\inputmanager.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\model.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\scenemanager.obj
 d:\users\edwin\github\hurricanex\hurricanecore\debug\shaderprogram.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\meshcomponent.obj
-d:\users\edwin\github\hurricanex\hurricanecore\debug\modelmanager.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\shaderprogrammanager.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\spritecomponent.obj
+d:\users\edwin\github\hurricanex\hurricanecore\debug\window32.obj
+c:\users\edwin\documents\visual studio 2017\projects\hurricanex\debug\hurricanecore.lib
 d:\users\edwin\github\hurricanex\debug\hurricanecore.lib
 d:\users\edwin\github\hurricanex\debug\hurricanecore.pdb
 d:\users\edwin\github\hurricanex\hurricanecore\debug\hurricanecore.tlog\cl.command.1.tlog

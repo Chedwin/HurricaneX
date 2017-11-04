@@ -1,265 +1,86 @@
 #include "GameObject.h"
-#include "Scene.h"
-#include "MeshComponent.h"
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
+using namespace HurricaneEngine;
 
-// CONSTRUCTOR(S) / DESTRUCTOR
-//GameObject::GameObject(Scene& sc, const STRING& name) : gameObject(this)
-//{
-//	//if (name == "") 
-//	//	SetName("NewGameObject");
-//	//else 
-//	//	SetName(name);
-//
-//	//scripts = nullptr;
-//	//scripts = new GameObjectMultiScript();
-//
-//	//SetEnabled(true);
-//
-//	//scene = &sc;
-//	//sc.AddSceneNode(*gameObject);
-//}
-
-GameObject::GameObject(const STRING& name) : gameObject(this) 
+GameObject::GameObject(const STRING& _name) 
+	: gameObject(this)
 {
-	InitGameObject(name);
-}
-
-GameObject::~GameObject()
-{
-	DestroyScripts();
-	DestroyComponents();
+	SetName(_name);
+	Init();
 }
 
 GameObject::GameObject(const GameObject&) 
 {
-	// empty
+
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
-void GameObject::InitGameObject(const STRING& name) 
+GameObject::~GameObject() 
 {
-	if (name == "")
-		SetName(DEFAULT_GAMEOBJECT_NAME);
-	else
-		SetName(name);
-
-	scripts = nullptr;
-	scripts = new GameObjectMultiScript();
-
-	SetEnabled(true);
+	Destroy();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
+bool GameObject::Init()
+{
+	_scripts = new GameObjectMultiScript(*gameObject);
+	SetEnabled(true);
+	return true;
+}
 
-void GameObject::Update(const float _deltaTime)
+void GameObject::Destroy() 
+{
+	RemoveScripts();
+	RemoveComponents();
+}
+
+
+void GameObject::Update(const float _deltaTime) 
 {
 	// GameObject Scripting
-	if (scripts->scriptMap.size() > 0)
-	{
-		scripts->UpdateAllScripts(gameObject, _deltaTime);
-	}
+	if (_scripts->scriptMap.size() > 0)
+		_scripts->UpdateAllScripts(gameObject, _deltaTime);
 }
 
-void GameObject::PreRender(const float _deltaTime)
+void GameObject::PreRender() 
 {
-	//empty
+
 }
 
-void GameObject::Render(const float _deltaTime)
+void GameObject::Render() 
 {
-	// Render THIS object
-	MeshComponent* renderable = gameObject->GetComponent<MeshComponent>();
 
-	if (renderable) 
-		renderable->Render();	
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-// CHILDREN GAME OBJECTS
-// Helpful when building scene graph
-
-void GameObject::AddChild(GameObject& g)
-{
-	childObjects.push_back(&g);
-}
-
-void GameObject::RemoveChild(GameObject& g)
-{
-	VECTOR(GameObject*)::iterator iter;
-	for (iter = childObjects.begin(); iter != childObjects.end(); iter++)
-	{
-		if (*iter == &g) {
-			delete *iter;
-			*iter = nullptr;
-			return;
-		}
-	}
-}
-
-void GameObject::RemoveChild(const STRING& n)
-{
-	VECTOR(GameObject*)::iterator iter;
-	for (iter = childObjects.begin(); iter != childObjects.end(); iter++)
-	{
-		GameObject* temp = *iter;
-		if (temp->GetName() == n)
-		{
-			delete *iter;
-			childObjects.erase(iter);
-			return;
-		}
-	}
-	childObjects.shrink_to_fit();
-}
-
-void GameObject::ClearAllChildren()
-{
-	if (childObjects.size() > 0)
-	{
-		VECTOR(GameObject*)::iterator iter;
-		for (iter = childObjects.begin(); iter != childObjects.end(); iter++)
-		{
-			delete *iter;
-			*iter = nullptr;
-		}
-	}
-	childObjects.clear();
 }
 
 
-// GET CHILD
-// by name
-GameObject* GameObject::GetChild(const STRING& name)
+
+void GameObject::AddComponent(IComponent* c)
 {
-	VECTOR(GameObject*)::iterator iter;
-	for (iter = childObjects.begin(); iter != childObjects.end(); iter++)
-	{
-		GameObject* temp = *iter;
-		if (temp->GetName() == name)
-		{
-			return temp;
-		}
-	}
-	return nullptr;
-}
+	IComponent* temp = GetComponent<IComponent>();
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-// TAGS
-
-void GameObject::AddTag(const STRING& _tag)
-{
-	bool checkTag = HasTag(_tag);
-
-	if (!checkTag)
-	{
-		tags.push_back(_tag);
-		return;
-	}
-}
-
-bool GameObject::HasTag(const STRING& _tag)
-{
-	for (int i = 0; i < tags.size(); i++)
-	{
-		if (tags[i] == _tag)
-			return true;
-	}
-	return false;
-}
-
-void GameObject::RemoveTag(const STRING& _tag)
-{
-	bool checkTag = HasTag(_tag);
-
-	if (!checkTag)
+	if (temp)
 		return;
 
-	for (int i = 0; i < tags.size(); i++)
-	{
-		if (tags[i] == _tag) {
-			tags[i].erase();
-		}
-	}
-	tags.shrink_to_fit();
+	_componentList.push_back(c);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-// ATTACHABLE COMPONENTS
-
-// ADD
-void GameObject::AddComponent(Component* c)
-{
-	bool checkComp = HasComponent(c);
-
-	if (!checkComp)
-	{
-		componentList.push_back(c);
-		return;
-	}
-}
-
-// HAS component?
-bool GameObject::HasComponent(Component* c)
-{
-	if (componentList.size() > 0)
-	{
-		for (int i = 0; i < componentList.size(); i++)
-		{
-			Component* temp = componentList[i];
-			if (temp->compType == c->compType)
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-// DELETE all components on this gameobject
-void GameObject::DestroyComponents() 
+void GameObject::RemoveComponents()
 {
 	// TODO: Destroy and clean up components and other game objects
-	if (componentList.size() > 0)
+	if (!_componentList.empty())
 	{
-		for (int i = 0; i < componentList.size(); i++)
-		{
-			//switch (componentList[i]->compType) {
-			//case COMPONENT_TYPE::Renderable:
-			//	
-			//	break;
-			//case COMPONENT_TYPE::Light:
-			//	break;
-			//case COMPONENT_TYPE::Rigidbody:
-			//	break;
-			//case COMPONENT_TYPE::Collider:
-			//	break;
-			//}
-
-			delete componentList[i];
-			componentList[i] = nullptr;
-		}
+		for (int i = 0; i < _componentList.size(); i++)
+			SAFE_DELETE(_componentList[i]);
 	}
-	componentList.clear();
+	_componentList.clear();
+	_componentList.shrink_to_fit();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-// SCRIPTS
-
-void GameObject::DestroyScripts() 
+void GameObject::AddScript(GameObjectScript* _script)
 {
-	if (scripts)
-		delete scripts;
-	scripts = nullptr;
+	_scripts->AddScript(_script);
 }
 
-void GameObject::AddScript(GameObjectScript* _script) 
+void GameObject::RemoveScripts() 
 {
-	scripts->AddScript(_script);
+	SAFE_DELETE(_scripts);
 }

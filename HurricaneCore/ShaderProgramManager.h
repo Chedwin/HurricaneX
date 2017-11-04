@@ -5,7 +5,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Oct 14, 2016
-// Last updated:	Sep 07, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
@@ -19,28 +19,33 @@
 
 #define SHADER_MANAGER ShaderProgramManager::GetShaderManager()
 
+namespace HurricaneEngine 
+{
 
-class ShaderProgramManager {
-protected:
-	ShaderProgramManager() {}
 
-public:
-	~ShaderProgramManager();
-	static ShaderProgramManager* GetShaderManager();
+	class ShaderProgramManager {
+	protected:
+		ShaderProgramManager() {}
 
-	ResourceHandle<ShaderProgram> StoreShaderProg(const STRING& _name, ShaderProgram* _sp);
+	public:
+		~ShaderProgramManager();
+		static ShaderProgramManager* GetShaderManager();
 
-	void DeleteShaderProgram(STRING& _name);
+		ResourceHandle<ShaderProgram> StoreShaderProg(const STRING& _name, ShaderProgram* _sp);
 
-	ResourceHandle<ShaderProgram> GetShaderProgHandle(const STRING& _name);
-	ShaderProgram* GetShaderProgram(ResourceHandle<ShaderProgram>& _handle);
-	ShaderProgram* GetShaderProgram(const STRING& _name);
+		void DeleteShaderProgram(STRING& _name);
 
-protected:
-	static UNIQUE_PTR(ShaderProgramManager) _shaderProgManager;
-	friend DEFAULT_DELETE(ShaderProgramManager);
+		ResourceHandle<ShaderProgram> GetShaderProgHandle(const STRING& _name);
+		ShaderProgram* GetShaderProgram(ResourceHandle<ShaderProgram>& _handle);
+		ShaderProgram* GetShaderProgram(const STRING& _name);
 
-	ResourceManager<ShaderProgram> _shaderResources;
-};
+	protected:
+		static UNIQUE_PTR(ShaderProgramManager) _shaderProgManager;
+		friend DEFAULT_DELETE(ShaderProgramManager);
+
+		ResourceManager<ShaderProgram> _shaderResources;
+	};
+
+}
 
 #endif

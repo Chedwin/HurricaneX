@@ -1,9 +1,0 @@
-﻿  main_AG2D.cpp
-d:\users\edwin\github\hurricanex\hurricanecore\gameobject.h(105): warning C4018: '<': signed/unsigned mismatch
-  d:\users\edwin\github\hurricanex\awesomegame2d\awesomegame2d.h(50): note: see reference to function template instantiation 'TYPE *GameObject::GetComponent<MeshComponent>(void)' being compiled
-          with
-          [
-              TYPE=MeshComponent
-          ]
-  AwesomeGame2D.vcxproj -> D:\Users\edwin\GitHub\HurricaneX\Debug\AwesomeGame2D.exe
-  AwesomeGame2D.vcxproj -> D:\Users\edwin\GitHub\HurricaneX\Debug\AwesomeGame2D.pdb (Partial PDB)

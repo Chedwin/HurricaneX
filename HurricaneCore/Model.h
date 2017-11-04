@@ -1,45 +1,22 @@
-//*******************************//
-//
-// Name:			Model.h
-// Description:		Simple Model class that contains data about a model
-//					this includes: 
-//						vertices, uv coord, normals, name
-//
-// Author:			Edwin Chen
-// Created:			Oct 03, 2016
-// Last updated:	Sep 08, 2017
-//
-//*******************************//
-
-#ifndef _MODEL_H
-#define _MODEL_H
-
+#pragma once
 
 #include "Macro.h"
-#include "HMath.h"
+#include "D3D11Utility.h"
 
-class Model {
-public:
-	Model() {}
-	virtual ~Model() {}
+namespace HurricaneEngine 
+{
+	class Model {
+	public:
+		Model();
+		~Model();
 
-	virtual void Render() {}
+		bool Init();
+		void Render();
 
-	inline STRING GetModelName() {
-		return _name;
-	}
-	inline void SetModelName(const STRING& n) {
-		_name = n;
-	}
+	protected:
+		ID3D11Buffer *_vertexBuffer, *_indexBuffer;
+		int _vertexCount, _indexCount;
+	};
 
-protected:
-	STRING _name;
-public:
-	VECTOR(VEC3) vertex;
-	VECTOR(VEC2) uvs;
-	VECTOR(VEC3) normals;
+}
 
-	VECTOR(int) indices;
-};
-
-#endif

@@ -1,73 +1,45 @@
 //*******************************//
 //
 // Name:			Scene.h
-// Description:		Establishes an abstract "Scene" class for all types of Scene to use.
-//					Contains a root game object that begins the start of the "scene graph"
+// Description:		Abstract class definition for a base scene
+//					This class is a specialization of the IState interface for the SceneManager class
+//					Only scenes deriving from this class can be used by the scene manager
 //
 // Author:			Edwin Chen
-// Special Thanks:  Unity, Aidan Dearing, Mark Seaman
-//					
+// Special Thanks:	Scott Fielder
 //
-// Created:			Mar 22, 2016
-// Last updated:	Sep 07, 2017
+// Created:			Nov 04, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef _SCENE_H
+#define _SCENE_H
 
 #include "Macro.h"
-#include "HMath.h"
-#include "GameObject.h"
-#include "Camera.h"
+#include "IState.h"
 
-// forward declare the Game Scene Manager
-class Game;
+namespace HurricaneEngine 
+{
+#define HURRICANE_SCENE HurricaneEngine::IState<HurricaneEngine::SceneManager>
 
-//#define ROOT_NODE Scene::_rootNode.get()
-#define ROOT_NAME "RootNode"
+	class SceneManager;
+	class GameObject;
 
-class Scene {
-	friend class Game;
-public:
-	Scene();
-	virtual ~Scene();
+	class Scene : public HURRICANE_SCENE {
+	public:
+		Scene() {}
+		virtual ~Scene() {}
 
-	virtual void InitScene() = 0;
-	virtual void Update(const float _timeStep);
-	virtual void Render();
+		virtual void EnterState(SceneManager* owner) = 0;
+		virtual void ExitState(SceneManager* owner) = 0;
+		virtual void UpdateState(SceneManager* owner, const float _dt) = 0;
+		virtual void RenderState(SceneManager* owner) = 0;
 
-	void SetCamera(Camera* _c);
+	};
 
-
-	void AddSceneNode(GameObject& g);
-	void RemoveSceneNode(const STRING& gName);
-	void ClearAllSceneNodes();
-
-	// Find objects in scene
-	GameObject* FindGameObject(const STRING& name);
-
-
-	inline STRING GetSceneName() const {
-		return _name;
-	}
-	inline void SetSceneName(const STRING& n) {
-		_name = n;
-	}
-	int GetSceneSize() const;
-
-
-protected:
-	STRING _name;
-
-	// NOTE: the root node IS the scene graph
-	// it's a unique ptr to ensure it does not accidentally get deleted
-	UNIQUE_PTR(GameObject) _rootNode;
-	friend DEFAULT_DELETE(GameObject);
-public:
-	Camera* mainCamera;
-	Camera* currentCamera;
-};
+#undef HURRICANE_SCENE
+}
 
 
 #endif

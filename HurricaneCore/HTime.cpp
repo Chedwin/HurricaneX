@@ -1,5 +1,7 @@
 #include "HTime.h"
 
+using namespace Hurricane;
+
 __int64 HTime::m_prevFrame = 0;
 __int64 HTime::m_currentFrame = 0;
 __int64 HTime::m_freq = 0;
