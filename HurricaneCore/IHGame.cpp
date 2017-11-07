@@ -3,7 +3,8 @@
 using namespace HurricaneEngine;
 
 IHGame::IHGame() 
-	: _window(nullptr), _dxRenderer(nullptr), _sceneManager(nullptr)
+	: _window(nullptr), _dxRenderer(nullptr), _sceneManager(nullptr),
+	_fpsCounter(nullptr)
 {
 	// empty	
 }
@@ -16,15 +17,16 @@ IHGame::~IHGame()
 
 bool IHGame::InitEngine()
 {
-	_sceneManager = SceneManager::GetInstance();
+	_sceneManager = SCENE_MANAGER;
 	_fpsCounter = FPSCounter::GetFPSCounter();
+	_input = INPUT;
 
 	_window = new Window32();
 	if (!_window->InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT))
 		return false;
 
 	_dxRenderer = new DXRenderer();
-	if (!_dxRenderer->Initialize(_window->_hwnd, _window->Width(), _window->Height()))
+	if (!_dxRenderer->Initialize(_window->_hwnd, _window->Width(), _window->Height(), _window->IsFullScreen() ))
 		return false;
 
 	
@@ -32,7 +34,7 @@ bool IHGame::InitEngine()
 	return true;
 }
 
-void IHGame::AddScene(Scene* _scene) 
+void IHGame::AddScene(IScene* _scene) 
 {
 	if (!_sceneManager)
 		return;
@@ -83,7 +85,6 @@ int IHGame::Run()
 		else
 		{
 			_timer.Tick();
-			_fpsCounter->Frame();
 
 			if (_isRunning)
 			{
@@ -94,7 +95,8 @@ int IHGame::Run()
 				Sleep(100);
 			}
 
-			_fps = _fpsCounter->GetFps();
+			_fpsCounter->Frame();
+			_fps = _fpsCounter->GetFPS();
 		}
 	}
 
@@ -103,9 +105,7 @@ int IHGame::Run()
 
 void IHGame::GameLoop() 
 {
-
 	Update(_timer.DeltaTime());
-
 
 	_dxRenderer->BeginFrame(0, 0, 0.4f);
 
@@ -124,12 +124,23 @@ void IHGame::Render()
 	_sceneManager->RenderScene();
 }
 
+
+void IHGame::SetWindowTitle(const STRING& _string)
+{
+	_window->SetWindowTitleText(_string);
+}
+
+
+
+
+
+// Static Win32 Procedure Function that receives message from the game window
+// Input calls are here
 LRESULT CALLBACK IHGame::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	PAINTSTRUCT ps;
-
 	switch (msg) {
 	case WM_PAINT:
+		PAINTSTRUCT ps;
 		BeginPaint(hwnd, &ps);
 		EndPaint(hwnd, &ps);
 		return 0;
@@ -144,6 +155,10 @@ LRESULT CALLBACK IHGame::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpar
 		//INPUT->KeyDown((unsigned int)wparam);
 		return 0;
 
+		// Get Mouse Cursor Position
+	case WM_MOUSEMOVE:
+		INPUT->SetMousePos((unsigned int)GET_X_LPARAM(lparam), (unsigned int)GET_Y_LPARAM(lparam));
+		return 0;
 
 		// Check if a key has been released on the keyboard
 	case WM_KEYUP:
@@ -160,9 +175,4 @@ LRESULT CALLBACK IHGame::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpar
 		return DefWindowProc(hwnd, msg, wparam, lparam);
 	}
 
-}
-
-void IHGame::SetWindowTitle(const STRING & _string)
-{
-	_window->SetWindowTitleText(_string);
 }

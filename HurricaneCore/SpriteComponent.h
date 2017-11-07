@@ -18,6 +18,10 @@ namespace HurricaneEngine
 		void RenderComp() final;
 	};
 
+	class Sprite {
+
+
+	};
 }
 
 #endif

@@ -17,7 +17,7 @@
 // Special Thanks:	Unity
 //
 // Created:			Nov 21, 2016
-// Last updated:	Nov 03, 2017
+// Last updated:	Nov 06, 2017
 //
 //*******************************//
 
@@ -32,6 +32,7 @@ namespace HurricaneEngine
 {
 
 	class GameObject;
+
 	#pragma region class GameObjectScript -> SINGLE game object script
 
 	// NOTE: GameObjectScript is ABSTRACT
@@ -52,9 +53,9 @@ namespace HurricaneEngine
 
 	protected:
 		STRING _scriptName;
-	public:
+
 		typedef FUNCTION(bool(GameObject*, float)) ScriptLambda;
-		ScriptLambda		userUpdateFunction = nullptr;
+		ScriptLambda		_userUpdateFunction = nullptr;
 	};
 
 	#pragma endregion 

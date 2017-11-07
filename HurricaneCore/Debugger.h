@@ -17,9 +17,10 @@
 
 #include "Macro.h"
 
+#define DEBUG HurricaneEngine::Debugger
+
 namespace HurricaneEngine
 {
-
 	/// This enum is a simple 8-bit unsigned int
 	enum class EMessageType : unsigned short {
 		INFO = 0,

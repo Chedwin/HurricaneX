@@ -10,7 +10,7 @@
 // Special Thanks:	
 //
 // Created:			Oct 21, 2017
-// Last updated:	Nov 04, 2017
+// Last updated:	Nov 06, 2017
 //
 //*******************************//
 
@@ -52,7 +52,7 @@ namespace HurricaneEngine
 
 		void AddState(IState<T>* _state)
 		{
-			_stateManager.Add(_state->stateName, _state);
+			_stateManager.Add(_state->StateName(), _state);
 		}
 
 		void ChangeState(IState<T>* _state)
@@ -86,14 +86,19 @@ namespace HurricaneEngine
 			return _stateManager.GetResource(_name);
 		}
 
+		IState<T>* GetState(unsigned int _index) const
+		{
+			return _stateManager.GetResource(_index);
+		}
+
 		// INLINE
 		inline int Count() const 
 		{
-			return _stateManager->GetSize();
+			return _stateManager.GetSize();
 		}
 		inline bool IsEmpty() const 
 		{
-			return _stateManager->GetSize() == 0;
+			return _stateManager.IsEmpty();
 		}
 		
 

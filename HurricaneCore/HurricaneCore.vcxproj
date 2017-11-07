@@ -69,7 +69,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(DXSDK_DIR)Lib/x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -115,6 +118,7 @@
     <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="DXRenderer.cpp" />
     <ClCompile Include="FPSCounter.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectScript.cpp" />
     <ClCompile Include="GameTimer.cpp" />
@@ -126,13 +130,21 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgramManager.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureShader.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Window32.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingPlane.h" />
+    <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="FPSCounter.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectScript.h" />
+    <ClInclude Include="HUtility.h" />
+    <ClInclude Include="ICommand.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="D3D11Utility.h" />
     <ClInclude Include="Debugger.h" />
@@ -141,7 +153,6 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="HMath.h" />
-    <ClInclude Include="IGameScreen.h" />
     <ClInclude Include="IHGame.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IState.h" />
@@ -149,15 +160,17 @@
     <ClInclude Include="HTime.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="IScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderProgramManager.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="StateStack.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureShader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="Window32.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -161,20 +161,14 @@ bool DXRenderer::Initialize(HWND hwnd, int width, int height, bool isFullscreen,
 		RELEASE_COM(adaptorOutput);
 		RELEASE_COM(adaptor);
 		RELEASE_COM(factory);
-
-		if (displayModeList)
-			delete[] displayModeList;
-
-		displayModeList = 0;
+		SAFE_DELETE_ARRAY(displayModeList);
 		return false;
 	}
 
 	RELEASE_COM(adaptorOutput);
 	RELEASE_COM(adaptor);
 	RELEASE_COM(factory);
-
-	delete[] displayModeList;
-	displayModeList = 0;
+	SAFE_DELETE_ARRAY(displayModeList);
 
 	if (!InitSwapChain(hwnd, width, height, numerator, denominator, isFullscreen, vsync))
 		return false;
@@ -242,16 +236,9 @@ bool DXRenderer::InitSwapChain(HWND hwnd, int width, int height, unsigned int nu
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	// Set the refresh rate of the back buffer
-	if (_vsyncEnabled) 
-	{
-		swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
-	}
-	else 
-	{
-		swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
-	}
+	swapChainDesc.BufferDesc.RefreshRate.Numerator	 = (_vsyncEnabled) ? numerator   : 0;
+	swapChainDesc.BufferDesc.RefreshRate.Denominator = (_vsyncEnabled) ? denominator : 1;
+
 
 	// set the usage of the back buffer
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;

@@ -10,7 +10,7 @@
 // Special Thanks:  Mathieu Violette, James Sholdice, Nathan Senter, Unity, Aiden Dearing, House Yokeswaran, Mark Seaman
 //
 // Created:			Sep 30, 2016
-// Last updated:	Nov 03, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
@@ -25,8 +25,6 @@
 #include "IComponent.h"
 #include "GameObjectScript.h"
 
-#include "MeshComponent.h"
-
 
 
 // forward declare 
@@ -35,6 +33,8 @@ namespace HurricaneEngine
 {
 
 	#define DEFAULT_GAMEOBJECT_NAME "GameObject"
+
+	class IScene;
 
 	class GameObject {
 	protected:
@@ -55,7 +55,7 @@ namespace HurricaneEngine
 		GameObject* gameObject;
 
 		// Transform fields
-		Transform transform;
+		HMath::Transform transform;
 
 		// Which scene am I in?
 

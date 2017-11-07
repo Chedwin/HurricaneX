@@ -23,6 +23,7 @@ namespace HurricaneEngine
 {
 
 #define HX_WIN32_CLASS_NAME "HGAME" // Macro defined string for initializing WIN32 window class
+
 	class IHGame;
 	class Window32 {
 		friend class IHGame;
@@ -60,6 +61,8 @@ namespace HurricaneEngine
 
 		HDC _hdc;
 	};
+
+#undef HX_WIN32_CLASS_NAME
 
 } // end namespace HurricaneEngine
 

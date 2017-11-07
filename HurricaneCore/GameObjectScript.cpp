@@ -20,8 +20,8 @@ GameObjectScript::~GameObjectScript()
 // TODO: be overridden by a derived class
 bool GameObjectScript::UpdateScript(GameObject* gameObject, const float _timeStep)
 {
-	if (userUpdateFunction)
-		return userUpdateFunction(gameObject, _timeStep);
+	if (_userUpdateFunction)
+		return _userUpdateFunction(gameObject, _timeStep);
 
 	return true;
 }
@@ -87,7 +87,7 @@ void GameObjectMultiScript::ClearAllScripts()
 		for (iter = scriptMap.begin(); iter != scriptMap.end(); iter++)
 		{
 			GameObjectScript* temp = iter->second;
-			SafeDeletePTR(temp);
+			SAFE_DELETE(temp);
 		}
 	}
 	scriptMap.clear();

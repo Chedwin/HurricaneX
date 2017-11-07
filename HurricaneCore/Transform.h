@@ -18,7 +18,7 @@
 
 #include "HMath.h"
 
-namespace HurricaneEngine 
+namespace HMath 
 {
 
 	struct Transform

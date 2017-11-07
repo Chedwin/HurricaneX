@@ -1,6 +1,6 @@
 #include "HTime.h"
 
-using namespace Hurricane;
+using namespace HurricaneEngine;
 
 __int64 HTime::m_prevFrame = 0;
 __int64 HTime::m_currentFrame = 0;

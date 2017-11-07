@@ -32,9 +32,3 @@ void FPSCounter::Frame()
 		m_startTime = GetTickCount();
 	}
 }
-
-int FPSCounter::GetFps()
-{
-	return m_fps;
-}
-

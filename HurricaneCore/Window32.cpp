@@ -117,7 +117,7 @@ bool Window32::InitWindow(int _wd, int _hg, bool _fs)
 	int pf = ChoosePixelFormat(_hdc, &pfd);
 	if (pf == 0) {
 		MessageBox(NULL, "ChoosePixelFormat() failed:  "
-		"Cannot find a suitable pixel format.", "Error", MB_OK);
+			"Cannot find a suitable pixel format.", "Error", MB_OK);
 		return false;
 	}
 
@@ -156,7 +156,7 @@ void Window32::ExitWindow()
 	_hInstance = nullptr;
 }
 
-void Window32::SetWindowTitleText(const STRING & _title)
+void Window32::SetWindowTitleText(const STRING& _title)
 {
 	SetWindowText(Window32::_hwnd, _title.c_str());
 }

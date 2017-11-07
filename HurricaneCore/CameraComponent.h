@@ -14,13 +14,13 @@ namespace HurricaneEngine
 	protected:
 		DXRenderer* _dxR;
 
-		MAT4 _viewMatrix;
-		MAT4 _projMatrix;
-		MAT4 _orthoMatrix;
+		HMath::MAT4 _viewMatrix;
+		HMath::MAT4 _projMatrix;
+		HMath::MAT4 _orthoMatrix;
 
-		PLANE  _frustum[6];
+
 	public:
-		VEC3 dir, up;
+		HMath::VEC3 dir, up;
 
 		float pitch;
 		float yaw;
@@ -41,8 +41,6 @@ namespace HurricaneEngine
 		void DestroyComp() final;
 		void UpdateComp(const float _deltaTime) final;
 		void RenderComp() final;
-
-		void BuildViewFrustrum();
 	};
 
 }

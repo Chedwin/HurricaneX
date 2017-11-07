@@ -8,7 +8,7 @@
 // Special Thanks:  
 //
 // Created:			Jul 09, 2016
-// Last updated:	Oct 31, 2017
+// Last updated:	Nov 06, 2017
 //
 //*******************************//
 
@@ -17,7 +17,7 @@
 
 #include "Macro.h"
 
-namespace Hurricane 
+namespace HurricaneEngine 
 {
 
 	class HTime {

@@ -7,7 +7,7 @@
 // Special Thanks:	DirectX 
 //
 // Created:			Oct 08, 2016
-// Last updated:	Nov 03, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
@@ -18,23 +18,23 @@
 
 #include "D3D11Utility.h"
 
+namespace HMath 
+{
 
-#define VEC3 DirectX::XMFLOAT3 // 3D Vector -> 32 bit float point components
-#define VEC2 DirectX::XMFLOAT2
-#define VEC4 DirectX::XMFLOAT4
+	typedef DirectX::XMFLOAT3 VEC3;
+	typedef DirectX::XMFLOAT2 VEC2;
 
-#define MAT4 DirectX::XMMATRIX
-#define MAT4_TRANSPOSE DirectX::XMMatrixTranspose
+	typedef DirectX::XMFLOAT4 VEC4;
 
-#define PLANE DirectX::XMVECTOR
+	typedef DirectX::XMMATRIX MAT4;
 
+	typedef DirectX::XMVECTOR QUATERNION;
 
-#define QUATERNION DirectX::XMVECTOR
+	#define PERSPECTIVE_MATRIX	DirectX::XMMatrixPerspectiveFovLH
+	#define LOOKAT_MATRIX		DirectX::XMMatrixLookToLH
+	#define TRANSPOSE_MATRIX	DirectX::XMMatrixTranspose
 
-#define PERSPECTIVE_MATRIX DirectX::XMMatrixPerspectiveFovLH
-#define LOOKAT_MATRIX DirectX::XMMatrixLookToLH
-
-
+}
 
 
 

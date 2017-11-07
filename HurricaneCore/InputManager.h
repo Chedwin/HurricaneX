@@ -8,43 +8,55 @@
 // Special Thanks:  
 //
 // Created:			Jul 17, 2016
-// Last updated:	May 20, 2017
+// Last updated:	Nov 06, 2017
 //
 //*******************************//
 
 
-#ifndef INPUT_HANDLER_H
-#define INPUT_HANDLER_H
+#ifndef _INPUT_MANAGER_H
+#define _INPUT_MANAGER_H
 
 #include "Macro.h"
+#include "HMath.h"
 
 #define INPUT InputManager::GetInputManager()
 
 namespace HurricaneEngine 
 {
+	class IHGame;
 
 	class InputManager {
+		friend class IHGame;
 	protected:
-		bool _keys[256];
+		MAP(unsigned int, bool) _keyMap;
+
 		static UNIQUE_PTR(InputManager) _inputManager;
 		friend DEFAULT_DELETE(InputManager);
 
-	private:
+		HMath::VEC2 _oldMousePos;
+		HMath::VEC2 _curMousePos;
+
+	protected:
 		InputManager();
+
+		bool InitInput();
+		void SetMousePos(unsigned int _x, unsigned int _y);
 	public:
 		~InputManager();
 
 		static InputManager* GetInputManager();
 
 
-		bool InitInput();
 
-		void KeyDown(unsigned int);
-		void KeyUp(unsigned int);
+		void KeyDown(unsigned int _key);
+		void KeyUp(unsigned int _key);
 
-		bool IsKeyDown(unsigned int);
+		bool IsKeyDown(unsigned int _key);
+
+		const HMath::VEC2& GetMousePos() const;
 
 	};
 
 } // end namespace HurricaneEngine
+
 #endif

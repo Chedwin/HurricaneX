@@ -32,6 +32,7 @@ bool TestGame::InitGame()
 	IHGame::AddScene(new MainMenuScene());
 	IHGame::AddScene(new GameplayScene());
 
+
 	return true;
 }
 

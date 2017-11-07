@@ -7,7 +7,7 @@
 // Special Thanks:  
 //
 // Created:			May 20, 2017
-// Last updated:	Oct 31, 2017
+// Last updated:	Nov 04, 2017
 //
 //*******************************//
 
@@ -23,6 +23,8 @@
 #include <dxgi.h>
 #include <d3dcommon.h>
 
+#include <d3dx11tex.h>
+
 #include <DirectXMath.h>
 #include <DirectXMathVector.inl>
 #include <DirectXColors.h>
@@ -32,6 +34,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "d3dx11.lib")
 
 
 

@@ -8,7 +8,7 @@
 // Special Thanks:	
 //
 // Created:			Oct 21, 2017
-// Last updated:	Nov 02, 2017
+// Last updated:	Nov 06, 2017
 //
 //*******************************//
 
@@ -41,7 +41,7 @@ namespace HurricaneEngine
 
 		void Clear() 
 		{
-			if (Count() == 0)
+			if (IsEmpty())
 				return;
 			
 			while (!IsEmpty())
@@ -64,11 +64,24 @@ namespace HurricaneEngine
 			_currentState->EnterState(_owner);
 		}
 
-		IState<T>* PeekState()
+		IState<T>* PeekState() const
 		{
 			return _stack.peek();
 		}
 
+		void UpdateState(const float _deltaTime) 
+		{
+			if(_currentState)
+				_currentState->UpdateState(_owner, _deltaTime);
+		}
+
+		void RenderState()
+		{
+			if (_currentState)
+				_currentState->RenderState(_owner);
+		}
+
+		// INLINE
 		inline int Count() const 
 		{
 			return _stack.size();

@@ -25,17 +25,17 @@ SceneManager::~SceneManager()
 	SAFE_DELETE(_sceneFSM);
 }
 
-void SceneManager::AddScene(Scene* _scene)
+void SceneManager::AddScene(IScene* _scene)
 {
 	_sceneFSM->AddState(_scene);
 	if (!_currentScene)
 		SetCurrentScene(_scene);
 }
 
-void SceneManager::SetCurrentScene(Scene* _scene)
+void SceneManager::SetCurrentScene(IScene* _scene)
 {
 	_sceneFSM->ChangeState(_scene);
-	_currentScene = static_cast<Scene*>(_sceneFSM->GetCurrentState());
+	_currentScene = static_cast<IScene*>(_sceneFSM->GetCurrentState());
 }
 
 
@@ -58,7 +58,7 @@ void SceneManager::RenderScene()
 
 void SceneManager::SwitchScene(const STRING& _name)
 {
-	Scene* newScene = static_cast<Scene*>(_sceneFSM->GetState(_name));
+	IScene* newScene = static_cast<IScene*>(_sceneFSM->GetState(_name));
 
 	if (!newScene) 
 	{
@@ -67,4 +67,28 @@ void SceneManager::SwitchScene(const STRING& _name)
 	}
 
 	SetCurrentScene(newScene);
+}
+
+void SceneManager::SwitchScene(unsigned int _index)
+{
+	IScene* sc = static_cast<IScene*>(_sceneFSM->GetState(_index));
+
+	if (!sc)
+	{
+		Debugger::Error("Scene indexed: '" + TO_STRING(_index) + "' does not exist!");
+		return;
+	}
+
+	SetCurrentScene(sc);
+}
+
+STRING SceneManager::CurrentSceneName() const
+{
+	return _currentScene->_stateName;
+}
+
+int SceneManager::CurrentSceneIndex() const
+{
+	int idx = (int)_currentScene->_sceneIndex;
+	return (idx >= 0) ? idx : -1;
 }

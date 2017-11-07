@@ -8,7 +8,7 @@
 //
 // Author:			Edwin Chen
 // Created:			Apr 05, 2016
-// Last updated:	Nov 04, 2017
+// Last updated:	Nov 06, 2017
 //
 //*******************************//
 
@@ -22,6 +22,7 @@
 
 // Windows
 #include <Windows.h>
+#include <windowsx.h>
 #include <stdlib.h>
 #include <tchar.h>
 #include <io.h>
@@ -134,9 +135,6 @@
 /////////////////////////////////////////////////////////////////////////
 
 #pragma region CUSTOM MACRO DEFINE FUNCTIONS
-
-// DELETE ABTs -> faster to delete an object this way
-#define SafeDeletePTR(x) { if(x) delete x; x = nullptr; }
 
 #define SAFE_RELEASE(x) if( x ) { (x)->Release(); (x) = NULL; }
 #define SAFE_DELETE(x) if( x ) { delete(x); (x) = NULL; }

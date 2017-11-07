@@ -17,48 +17,48 @@
 
 #include "Macro.h"
 #include "FiniteStateMachine.h"
-#include "Scene.h"
+#include "IScene.h"
+
+
+#define SCENE_MANAGER SceneManager::GetInstance()
 
 
 namespace HurricaneEngine 
 {
-#define SCENE_MANAGER SceneManager::GetInstance()
-
 	class IHGame;
 
 	class SceneManager {
 		friend class IHGame;
-
 		friend DEFAULT_DELETE(SceneManager);
-		static UNIQUE_PTR(SceneManager) _sceneManager;
 
 	protected:
+		static UNIQUE_PTR(SceneManager) _sceneManager;
 		FiniteStateMachine<SceneManager>* _sceneFSM;
-		Scene* _currentScene = nullptr;
+		IScene* _currentScene = nullptr;
 
 	protected:
 		SceneManager();
 		~SceneManager();
 
 		void DeleteScenes();
-		void AddScene(Scene* _scene);
+		void AddScene(IScene* _scene);
 
 		void UpdateScene(const float _deltaTime);
 		void RenderScene();
-		void SetCurrentScene(Scene* _scene);
+		void SetCurrentScene(IScene* _scene);
 
 	public:
 		static SceneManager* GetInstance();
 		
 		void SwitchScene(const STRING& _name);
+		void SwitchScene(unsigned int _index);
 
-		inline STRING CurrentSceneName() const {
-			return _currentScene->stateName;
-		}
+		STRING CurrentSceneName() const;
+		int CurrentSceneIndex() const; // returns -1 if null
 	};
 
 
 
-}
+} // end namespace HurricaneEngine
 
 #endif

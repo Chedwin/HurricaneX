@@ -1,5 +1,6 @@
 #include "GameObject.h"
 
+using namespace HMath;
 using namespace HurricaneEngine;
 
 GameObject::GameObject(const STRING& _name) 

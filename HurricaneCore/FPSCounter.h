@@ -16,14 +16,15 @@
 
 #include "Macro.h"
 
+#define FPS_COUNTER 
 #define MAX_FRAME_RATE 120.0f
 
 namespace HurricaneEngine 
 {
-	//class IHGame;
+	class IHGame;
 
 	class FPSCounter {
-		//friend class IHGame;
+		friend class IHGame;
 	protected:
 		static UNIQUE_PTR(FPSCounter) _instance;
 		friend DEFAULT_DELETE(FPSCounter);
@@ -35,14 +36,16 @@ namespace HurricaneEngine
 
 	protected:
 		FPSCounter() {}
+		void Initialize();
+		void Frame();
 	public:
 		~FPSCounter() {}
 
 		static FPSCounter* GetFPSCounter();
 
-		void Initialize();
-		void Frame();
-		int  GetFps();
+		inline int GetFPS() const {
+			return m_fps;
+		}
 	};
 
 } // end namespace HurricaneEngine

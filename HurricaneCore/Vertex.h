@@ -32,11 +32,11 @@ namespace HurricaneEngine
 			: pos(x, y, z) {}
 
 		Vertex(float x, float y, float z,
-			float cr, float cg, float cb, float ca)
-			: pos(x, y, z), color(cr, cg, cb, ca) {}
+			float u, float v)
+			: pos(x, y, z), uv(u, v) {}
 
 		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT2 uv;
 	};
 
 }

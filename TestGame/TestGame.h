@@ -4,6 +4,7 @@
 #include <IHGame.h>
 
 
+
 class TestGame : public HurricaneEngine::IHGame {
 	friend DEFAULT_DELETE(TestGame);
 protected:
@@ -13,9 +14,9 @@ protected:
 	TestGame();
 	~TestGame() final;
 
-	bool InitGame() final;
-	void Update(const float _deltaTime) override;
-	void OnExit()   final;
+	bool InitGame()						override;
+	void Update(const float _deltaTime)	override;
+	void OnExit()						override;
 
 public:
 	static TestGame* GetInstance();

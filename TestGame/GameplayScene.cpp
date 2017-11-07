@@ -4,14 +4,14 @@
 
 using namespace HurricaneEngine;
 
-GameplayScene::GameplayScene()
+GameplayScene::GameplayScene(const STRING& _name) 
+	: IScene(_name)
 {
-	stateName = "Gameplay";
-	triangle.InitTriangle(TestGame::GetInstance()->DXR());
 }
 
 GameplayScene::~GameplayScene()
 {
+
 }
 
 void GameplayScene::EnterState(SceneManager* owner)
@@ -30,5 +30,5 @@ void GameplayScene::UpdateState(SceneManager* owner, const float _dt)
 
 void GameplayScene::RenderState(SceneManager * owner)
 {
-	triangle.Render();
+
 }
